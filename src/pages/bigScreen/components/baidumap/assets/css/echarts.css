@@ -1,0 +1,142 @@
+.histogram_box
+{
+	width: 100%;
+	height: 100%;
+	float: left;
+	position: relative;
+	display: table;
+}
+.bottoms
+{
+	width: 100%;
+	height: 100%;
+	display: table-cell;
+	vertical-align: bottom;
+}
+.histogram_tp
+{
+	width: 100%;
+	height: 100%;
+	background:url("../images/bg_sd.png") top center no-repeat ,linear-gradient( to right,rgba(0,42,255,0.8),rgba(0,42,255,0.1) 2px, rgba(255,50,50,0) 20%, rgba(255,50,50,0) 80%,rgba(0,42,255,0.1) calc(100% - 2px),rgba(0,42,255,0.8));
+	position: absolute;
+	z-index: 9;
+}
+.histogram_bin
+{
+	width: 100%;
+	height: 50px;
+	border-radius: 50%;
+}
+.histogram_tp .histogram_bin
+{
+	position: absolute;
+	top: -25px;
+	left: 0;
+	background: radial-gradient( rgba(0,42,255,0.0), rgba(255,50,50,0) 40%,rgba(0,42,255,0.3) calc(100% - 2px),rgba(0,42,255,0.8));
+
+}
+.histogram_md
+{
+	height: 0%;
+	display: inline-block;
+	width: 100%;
+	transition: 1s ease-in;
+	position: relative;
+	background: linear-gradient( to right,rgba(18,148,130,0.8),rgba(18,148,130,0.8) 1px, rgba(21,179,157,1) 3px, rgba(74,225,200,1) 15%,rgba(63,205,188,1) 35%,rgba(44,182,171,1) 50%,rgba(63,205,188,1) 70%,rgba(74,225,200,1) 85%, rgba(21,179,157,1) calc(100% - 3px),rgba(18,148,130,0.8) calc(100% - 1px),rgba(18,148,130,0.8));
+	z-index: 11;
+}
+.histogram_md .histogram_bin
+{
+	position: absolute;
+	z-index: 10;
+	background:#5ceeac;
+	border:solid 1px #129482;
+	box-sizing: border-box;
+}
+.histogram_md .histogram_bin.top
+{
+	top: -25px;
+	z-index: 13;
+}
+.histogram_md .histogram_bin.bottom
+{
+	bottom: -25px;
+	background: linear-gradient( to right,rgba(18,148,130,0.8),rgba(18,148,130,0.8) 1px, rgba(21,179,157,1) 3px, rgba(74,225,200,1) 15%,rgba(63,205,188,1) 35%,rgba(44,182,171,1) 50%,rgba(63,205,188,1) 70%,rgba(74,225,200,1) 85%, rgba(21,179,157,1) calc(100% - 3px),rgba(18,148,130,0.8) calc(100% - 1px),rgba(18,148,130,0.8));
+	border: 0;
+}
+.histogram_bo
+{
+	height: 0%;
+	display: inline-block;
+	width: 100%;
+	transition: 1s ease-in;
+	position: relative;
+	background: linear-gradient( to right,rgba(0,42,255,0.8),rgba(0,42,255,0.8) 1px, rgba(29,119,192,1) 3px, rgba(31,183,227,1) 15%,rgba(23,176,224,1) 35%,rgba(13,125,250,1) 50%,rgba(23,176,224,1) 70%,rgba(31,183,227,1) 85%, rgba(29,119,192,1) calc(100% - 3px),rgba(0,42,255,0.8) calc(100% - 1px),rgba(0,42,255,0.8));
+}
+.histogram_bo .histogram_bin
+{
+	position: absolute;
+	bottom: -25px;
+	background: radial-gradient( rgba(7,74,108,1),rgba(7,74,108,1) 16px,rgba(22,148,248,1) 17px,rgba(30,172,242,1) 50%,rgba(30,172,242,1) );
+	border-top:solid 1px #0a3e92;
+	box-sizing: border-box;
+}
+.left_box
+{
+	position: absolute;
+	top: 50%;
+	width: 100px;
+	left: -130px;
+	display:table;
+	opacity: 0;
+	animation:heas ease-in 0.3s 1s forwards;
+}
+.right_box
+{
+	position: absolute;
+	top: 50%;
+	width: 100px;
+	right: -130px;
+	display:table;
+	opacity: 0;
+	animation:heas ease-in 0.3s 1s forwards;
+}
+@keyframes heas
+{
+	from {opacity: 0;}
+	to {opacity: 1;}
+}
+.left_box_len
+{
+	width: 80px;
+	position: absolute;
+	border-top: 2px solid #67f2ac;
+	right: -60px;
+}
+.left_box_len span
+{
+	width: 9px;
+	height: 9px;
+	position: absolute;
+	border-radius: 50%;
+	right: -8px;
+	background:#67f2ac ;
+	top: -5px;
+}
+.right_box_len
+{
+	width: 80px;
+	position: absolute;
+	border-top: 2px solid #1bc4ec;
+	left: -60px;
+}
+.right_box_len span
+{
+	width: 9px;
+	height: 9px;
+	position: absolute;
+	border-radius: 50%;
+	left: -8px;
+	background:#1bc4ec ;
+	top: -5px;
+}

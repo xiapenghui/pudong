@@ -1,0 +1,131 @@
+
+html{
+    height:100%;
+}
+
+body{
+    height:100%;
+    overflow-y:hidden;
+}
+
+div.body {
+    margin-top: 10px;
+}
+
+div.userInfo {
+    margin-left: 10px;
+}
+
+div.userInfo input {
+    margin-right: 24px;
+}
+
+div.userInfo span {
+    margin-right: 4px;
+}
+
+div.serviceInfo div{
+    float: left;
+}
+
+
+div.serviceInfo {
+    margin-top: 20px;
+    margin-left: 10px;
+    display: flex;
+    flex-direction: row;
+}
+
+div.service{
+    display: flex;
+    flex-direction: column;
+}
+
+div.resourceTree{
+    width: 18em;
+    height: 828px;
+    border: 1px solid grey;
+    margin-right: 5px;
+    display: flex;
+    flex-direction: column;
+    text-align:left;
+    overflow:auto;
+}
+
+div.video_window{
+    display: flex;
+    flex-direction: column;
+    margin-left: 5px;
+}
+
+div.video_window_items {
+    display: flex;
+    flex-direction: row;
+}
+
+div.video_window_item {
+    display: flex;
+    flex-direction: column;
+}
+
+div.video {
+    border:1px solid grey;
+    margin-right: 1px;
+    margin-bottom: 1px;
+    width:300px;
+    height:230px;
+}
+
+textarea.location_info {
+    overflow:auto;
+    margin-bottom: 2px;
+    margin-right: 1px;
+    border:1px solid grey;
+    width:1210px;
+    height:110px;
+}
+
+div.play_param {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+div.play_tool {
+    display: flex;
+    flex-direction: row;
+}
+
+div.play_tool_item {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+}
+
+div.play_tool input {
+    margin-bottom: 8px;
+    width: 95px;
+}
+
+div.paramSet {
+    margin-top: 10px;
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+a:link{
+    text-decoration:none;
+}
+
+a:visited{
+    text-decoration:none;
+}
+
+a:hover{
+    text-decoration:none;
+}
+
+a:active{
+    text-decoration:none;
+}

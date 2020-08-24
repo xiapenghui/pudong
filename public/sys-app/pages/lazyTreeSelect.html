@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>数据选择</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="/common-assets/plugins/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="/common-assets/plugins/outdated/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/common-assets/css/outdated/style.css"/>
+
+    <link rel="stylesheet" href="/common-assets/plugins/outdated/metisMenu/2.7/metisMenu.min.css"/>
+    <link rel="stylesheet" href="/common-assets/plugins/outdated/bootstrap-toastr/2.0.1/toastr.min.css"/>
+    <link rel="stylesheet" href="/common-assets/plugins/outdated/icheck/custom.css"/>
+
+    <script src='/common-assets/js/jquery-2.1.1.js'></script>
+
+    <script src="/common-assets/js/outdated/bootstrap.min.js"></script>
+    <script src="/common-assets/js/outdated/jquery.form-3.51.0.min.js"></script>
+
+    <script src="/common-assets/plugins/layer/3.0.3/layer.js"></script>
+
+    <script src="/common-assets/plugins/outdated/pace/pace.min.js"></script>
+    <script src="/common-assets/plugins/outdated/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="/common-assets/plugins/outdated/bootstrap-toastr/2.0.1/toastr.min.js"></script>
+    <script src="/common-assets/plugins/outdated/jquery-validation/jquery.validate-1.11.1.min.js"></script>
+    <script src="/common-assets/plugins/outdated/jquery-validation/localization/messages_zh.js"></script>
+    <script src="/common-assets/plugins/outdated/icheck/icheck.min.js"></script>
+    <script src="/common-assets/plugins/outdated/metisMenu/2.7/metisMenu.js"></script>
+    <script src="/common-assets/plugins/dotize/dotize.js"></script>
+    <script src="/common-assets/js/promise-polyfill.min.js"></script>
+    <!-- 开发阶段使用vue.js以获取编译信息 -->
+    <script src="/common-assets/plugins/vue/2.5.17/vue.min.js"></script>
+    <script src="/common-assets/plugins/axios/0.18.0/axios.min.js"></script>
+    <!-- 引入组件库 -->
+    <script src="/common-assets/plugins/element-ui/lib/index.js"></script>
+    <link rel="stylesheet" href="/common-assets/plugins/outdated/bootstrap-table/1.11.1/css/bootstrap-table.min.css">
+
+    <link rel="stylesheet" href="/common-assets/plugins/jquery-ztree/3.5/css/metroStyle/metroStyle.css">
+    <link rel="stylesheet" href="/common-assets/css/outdated/page.css">
+    <script src="/common-assets/plugins/outdated/bootstrap-table/1.11.1/js/bootstrap-table.min.js"></script>
+    <script src="/common-assets/plugins/outdated/bootstrap-table/1.11.1/js/bootstrap-table-zh-CN.min.js"></script>
+
+    <script src="/common-assets/plugins/jquery-ztree/3.5/js/jquery.ztree.all.min.js"></script>
+    <script src="/common-assets/js/outdated/common.js"></script>
+
+</head>
+<body class="pace-done gray-bg">
+<div class="container-fluid">
+    <div class="row" id="lazyTreeSelectContent">
+        <div class="col-xs-12">
+            <div class="input-group">
+                <input id="searchName" name="单位树" type="text"
+                       class="form-control input-sm"/>
+                <div class="input-group-btn">
+                    <button type="button" id="searchBtn"
+                            class="btn btn-primary input-sm">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div id="tree" class="ztree" style="padding: 10px 5px;"></div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    var lazyTreeSelectContent = new Vue({
+        el: "#lazyTreeSelectContent",
+        data: function () {
+            return {
+                url: GetQueryString('url'),
+                expendURL: GetQueryString('expendURL'),
+                searchUrl: GetQueryString('searchUrl'),
+                parentKeyOfLeaf: GetQueryString('parentKeyOfLeaf'),
+                pIdKeyOfParent: GetQueryString('pIdKeyOfParent'),
+                nameKeyOfParent: GetQueryString('nameKeyOfParent'),
+                checkedId: GetQueryString('checkedId'),
+            }
+        }
+    });
+    var checkedId = lazyTreeSelectContent.checkedId;
+    var treeNodes = []; //缓存树的节点
+    var tree, setting = {
+        view: {
+            selectedMulti: false,
+            dblClickExpand: false,
+            fontCss: function (treeId, treeNode) {
+                return (!!treeNode.highlight) ? {
+                    color: '#A60000',
+                    "font-weight": "bold"
+                } : {
+                    color: "#333",
+                    "font-weight": "normal"
+                };
+            }
+        },
+        data: {
+            simpleData: {
+                enable: true,
+            },
+        },
+        callback: {
+            onExpand: function (event, treeId, treeNode) {
+                var load = layer.load(3, {
+                    shade: [0.1, '#fff']
+                    //0.1透明度的白色背景
+                });
+                var url = lazyTreeSelectContent.expendURL;
+                if (url.indexOf('?') !== -1) {
+                    url += '&'
+                } else {
+                    url += '?'
+                }
+                $.ajax(url + lazyTreeSelectContent.parentKeyOfLeaf + '=' + treeNode.id,
+                    {
+                        type: "GET",
+                        async: false,
+                        success: function (result) {
+                            var mapper = {
+                                id: "id",
+                                pId: "pId",
+                                name: "name"
+                            };
+                            var zNodes = listToNodes(
+                                !!result.list ? result.list
+                                    : (!!result.data ? result.data : result), false, mapper);
+                            treeNodes.addNodes(zNodes);
+                            addNodesToTree(tree, zNodes);
+                            layer.close(load);
+                        }
+                    });
+            },
+        }
+    };
+    $(function () {
+        //初始化树
+        var url = lazyTreeSelectContent.url;
+        var searchUrl = lazyTreeSelectContent.searchUrl;
+        $.ajax({
+            async: false,
+            type: 'GET',
+            dataType: "json",
+            url: url,
+            error: function () {
+                alert('请求失败');
+            },
+            success: function (result) {
+                var mapper = {
+                    id: "id",
+                    pId: "parentId",
+                    name: "orgName"
+                };
+                var zNodes = listToNodes(!!result.list ? result.list
+                    : (!!result.data ? result.data : result), true, mapper);
+                treeNodes = zNodes;
+                tree = $.fn.zTree.init($("#tree"), setting, treeNodes);
+
+            }
+        });
+
+        $("#searchBtn").click(
+            function () {
+                var keyWord = $("#searchName").val();
+                if ($.isEmptyObject(keyWord)) {
+                    return;
+                }
+                if (searchUrl.indexOf('?') !== -1) {
+                    searchUrl += '&'
+                } else {
+                    searchUrl += '?'
+                }
+                $.ajax(searchUrl + "&keyWord=" + keyWord,
+                    {
+                        type: "GET",
+                        async: false,
+                        success: function (result) {
+                            var mapper = {
+                                id: "id",
+                                pId: "pId",
+                                name: "name"
+                            };
+                            var zNodes = listToNodes(
+                                !!result.list ? result.list
+                                    : (!!result.data ? result.data : result),
+                                false, mapper);
+                            treeNodes.addNodes(zNodes);
+                            tree = $.fn.zTree.init(
+                                $("#tree"),
+                                setting, treeNodes);
+                        }
+                    });
+
+                var nodes = tree.getNodesByParamFuzzy("name",
+                    keyWord);
+                showHighlight(nodes, tree);
+            });
+
+        //设置回车搜索
+        $('#searchName').keypress(function (e) {
+            detectEnter(e);
+        });
+
+    });
+
+    function detectEnter(event) {
+        var e = event || window.event;
+        var o = e.target || e.srcElement;
+        var keyCode = e.keyCode || e.which; // 按键的keyCode
+        if (keyCode == 13) {
+            e.keyCode = 9;
+            e.returnValue = false;
+            $('#searchBtn').click();
+        }
+    }
+
+    function showHighlight(nodes, tree) {
+        if (nodes !== null && nodes.length > 0) {
+            for (var i = 0; i < nodes.length; i++) {
+                var node = nodes[i];
+                node.highlight = true;
+                tree.updateNode(node);
+                tree.expandNode(node.getParentNode(), true);
+                if (node.isParent) {
+                    tree.expandNode(node, true);
+                }
+            }
+        }
+    }
+
+    function listToNodes(list, isParent, mapper) {
+        mapper = mapper || {};
+        var idMapper = mapper.id || "id";
+        var pIdMapper = mapper.pId || "pId";
+        var nameMapper = mapper.name || "name";
+        return list.map(function (item) {
+            var node;
+            node = {
+                id: item[idMapper],
+                pId: item[pIdMapper],
+                name: item[nameMapper],
+                isParent: isParent || item.isParent,
+            }
+            return node;
+        });
+    }
+
+    //给树增加节点
+    function addNodesToTree(tree, zNodes) {
+        for (var i = 0; i < zNodes.length; i++) {
+            var parentNode = tree.getNodeByParam("id", zNodes[i].pId);
+            var node = tree.getNodeByParam("id", zNodes[i].id);
+            if (node == undefined || node == null)
+                tree.addNodes(parentNode, [zNodes[i]]);
+        }
+    }
+
+    //treeNodes增加节点
+    Array.prototype.addNodes = function (nodes) {
+        for (var i = 0; i < nodes.length; i++) {
+            var flag = false;
+            for (var j = 0; j < this.length; j++) {
+                if (this[j].id == nodes[i].id) {
+                    flag = true;
+                    break;
+                }
+            }
+            if (!flag)
+                this.push(nodes[i]);
+        }
+    }
+</script>
+</html>

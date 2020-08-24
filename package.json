@@ -1,0 +1,48 @@
+{
+  "name": "direwolf-vue",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build"
+  },
+  "jshintConfig": {
+    "esversion": 6
+  },
+  "dependencies": {
+    "@turf/turf": "^5.1.6",
+    "axios": "0.18.0",
+    "babel-polyfill": "^6.26.0",
+    "chroma-js": "^2.0.3",
+    "echarts": "^4.2.1",
+    "element-ui": "2.5.4",
+    "gl-matrix": "^3.0.0",
+    "heatmap.js": "^2.0.5",
+    "jquery": "^3.4.1",
+    "jsts": "2.0.4",
+    "mockjs": "1.0.0",
+    "moment": "^2.24.0",
+    "node-sass": "^4.12.0",
+    "qs": "6.7.0",
+    "sass-loader": "7.1.0",
+    "screenfull": "3.3.3",
+    "video.js": "^7.5.5",
+    "videojs-flash": "^2.2.0",
+    "viewerjs": "^1.3.3",
+    "vue": "2.6.7",
+    "vue-baidu-map": "^0.21.20",
+    "vue-router": "3.0.2",
+    "vue-slimscroll": "1.0.1",
+    "vuex": "3.1.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "3.4.1",
+    "@vue/cli-service": "^3.7.0",
+    "element-theme-chalk": "2.5.4",
+    "html-webpack-plugin": "3.2.0",
+    "less": "3.9.0",
+    "less-loader": "4.1.0",
+    "vue-template-compiler": "2.6.7",
+    "webpack": "4.29.6"
+  }
+}

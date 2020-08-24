@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="../../../lib/zui/css/zui.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../lib/zui/css/zui-theme.css"/>
+    <style>
+        body{
+            width: 100%;
+            height: 100%;
+        }
+
+        .loginFormControl {
+            padding-left: 100px !important;
+        }
+
+        .loginFormLabel {
+            width: 100px;
+        }
+
+        .btnWidth {
+            width : 70px;
+        }
+
+        .audioTalkWidth {
+            width : 120px;
+        }
+
+        .ptzBtnWidth {
+            width : 70px;
+        }
+
+        .ptzBtnRowHeight {
+            height: 40px;
+        }
+
+        .has-right-btn {
+            padding-right: 50px;
+        }
+
+        .right-btn {
+            position: absolute;
+            right: 0px;
+            top: 0px;
+            width: 50px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="row" style="height: 370px;">
+        <div class="col-xs-12" style="height: 100%;">
+            <div id="video" style="width: 700px;height: 100%;background-color: black;"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-xs-5 container">
+            <div class="row">
+                <div class="col col-xs-12">
+                    <br>
+                    <div class="input-control has-label-left">
+                        <input id="ip" type="text" class="form-control loginFormControl" value="116.247.116.44" placeholder="">
+                        <label for="ip" class="input-control-label-left text-right loginFormLabel">IP:</label>
+                    </div>
+                    <br>
+                    <div class="input-control has-label-left">
+                        <input id="port" type="text" class="form-control loginFormControl" value="7178" placeholder="">
+                        <label for="port" class="input-control-label-left text-right loginFormLabel">PORT:</label>
+                    </div>
+                    <br>
+                    <div class="input-control has-label-left">
+                        <input id="username" type="text" class="form-control loginFormControl" value="test01" placeholder="">
+                        <label for="username" class="input-control-label-left text-right loginFormLabel">USERNAME:</label>
+                    </div>
+                    <br>
+                    <div class="input-control has-label-left">
+                        <input id="pwd" type="text" class="form-control loginFormControl"  value="abc123" placeholder="">
+                        <label for="pwd" class="input-control-label-left text-right loginFormLabel">PWD:</label>
+                    </div>
+                    <br>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-xs-12">
+                    <button id="btnLoad" class="btn btn-primary btnWidth">Load</button>
+                    <button id="btnLogin" class="btn btn-primary btnWidth">Login</button>
+                    <button id="btnLogout" class="btn btn-primary btnWidth">Logout</button>
+                    <button id="btnFree" class="btn btn-primary btnWidth">Free</button>
+                </div>
+            </div>
+        </div>
+        <div class="col col-xs-7">
+            <br>
+            <div class="container">
+                <div class="row">
+                    <div class="col col-xs-11">
+                        <div class="input-control has-label-left">
+                            <input id="puid" type="text" class="form-control" placeholder="">
+                            <label for="puid" class="input-control-label-left">PUID:</label>
+                        </div>
+                        <br>
+                        <div class="input-control has-label-left">
+                            <input id="resIdx" type="text" class="form-control" placeholder="">
+                            <label for="resIdx" class="input-control-label-left">RESIDX:</label>
+                        </div>
+                    </div>
+                    <div class="col col-xs-1">
+                        <div>
+                            <button id="btnPlay" class="btn btn-primary btnWidth">Play</button>
+                        </div>
+                        <br>
+                        <div>
+                            <button id="btnStop" class="btn btn-primary btnWidth">Stop</button>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col col-xs-4">
+                        <div class="container">
+                            <div class="row ptzBtnRowHeight">
+                                <div class="col col-md-4 col-md-offset-4">
+                                    <button id="btnPtzUp" class="btn btn-primary ptzBtnWidth">Up</button>
+                                </div>
+                            </div>
+                            <div class="row ptzBtnRowHeight">
+                                <div class="col col-md-4">
+                                    <button id="btnPtzLeft" class="btn btn-primary ptzBtnWidth">Left</button>
+                                </div>
+                                <div class="col col-md-4 col-md-offset-4">
+                                    <button id="btnPtzRight" class="btn btn-primary ptzBtnWidth">Right</button>
+                                </div>
+                            </div>
+                            <div class="row ptzBtnRowHeight">
+                                <div class="col col-md-4 col-md-offset-4">
+                                    <button id="btnPtzDown" class="btn btn-primary ptzBtnWidth">Down</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-xs-8">
+                        <div class="input-control has-label-left">
+                            <input id="def" type="text" class="form-control has-right-btn" value="" placeholder="">
+                            <label for="def" class="input-control-label-left text-right">DEF:</label>
+                            <button id="btnSetDef" class="btn btn-primary right-btn">SET</button>
+                        </div>
+                        <br>
+                        <div class="input-control has-label-left">
+                            <input id="vol" type="text" class="form-control has-right-btn" value="" placeholder="">
+                            <label for="vol" class="input-control-label-left text-right">VOL:</label>
+                            <button id="btnSetVol" class="btn btn-primary right-btn">SET</button>
+                        </div>
+                        <br>
+                        <div class="alert alert-info">
+                        </div>
+                        <div class="container">
+                            <button id="btnAudio" class="btn btn-primary audioTalkWidth">Audio Start</button>
+                            <button id="btnTalk" class="btn btn-primary audioTalkWidth">Talk Start</button>
+                            <button id="btnLocation" class="btn btn-primary audioTalkWidth">Location Start</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript" src="../../../lib/jquery/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="../../../lib/zui/js/zui.js"></script>
+<script type="text/javascript" src="js/ccplugin/NPCCEnum.js"></script>
+<script type="text/javascript" src="js/ccplugin/NPCCErrorCode.js"></script>
+<script type="text/javascript" src="js/ccplugin/NPCCStruct.js"></script>
+<script type="text/javascript" src="js/ccplugin/NPCCUtils.js"></script>
+<script type="text/javascript" src="js/ccplugin/NPCCInterface.js"></script>
+<script type="text/javascript" src="js/ccplugin/NPCCInterlayer.js"></script>
+<script type="text/javascript" src="js/webclient.js"></script>
+<script type="text/javascript" src="js/test.js"></script>
+
+</body>
+</html>

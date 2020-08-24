@@ -1,0 +1,29 @@
+/* guxiyuan 20170607 修改*/
+
+#page-wrapper {
+	margin: 0 0px;
+}
+.ibox-title {
+	padding: 10px 10px 7px;
+	min-height: 38px;
+}
+.ibox {
+	margin-bottom: 5px;
+}
+
+/** 修正表格高度100%的问题 */
+/* .fixed-table-body {
+	height: auto
+}
+.fixed-table-container thead th .th-inner {
+	line-height: 1;
+	height: 30px;
+	font-family: Microsoft YaHei,'宋体' , Tahoma, Helvetica, Arial, "\5b8b\4f53", sans-serif;
+    font-size: 14px;
+    background-color: #EFEFEF;
+}
+.bootstrap-table .table:not(.table-condensed), .bootstrap-table .table:not(.table-condensed) > tbody > tr > th, .bootstrap-table .table:not(.table-condensed) > tfoot > tr > th, .bootstrap-table .table:not(.table-condensed) > thead > tr > td, .bootstrap-table .table:not(.table-condensed) > tbody > tr > td, .bootstrap-table .table:not(.table-condensed) > tfoot > tr > td{
+	padding: 4px;
+    vertical-align: middle;
+} */
+

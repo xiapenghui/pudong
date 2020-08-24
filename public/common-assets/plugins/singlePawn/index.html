@@ -1,0 +1,141 @@
+<!DOCTYPE>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>RST_WebSDkDemo</title>
+    <link rel="stylesheet" href="css/index.css"/>
+</head>
+<body>
+<div class="body">
+    <div class="userInfo" style="min-width: 1192px;">
+        <span>地址:</span>
+        <input id="ip" name="ip" value="116.247.116.44"/>
+        <span>端口:</span>
+        <input id="port" name="port" value="7178"/>
+        <span>用户名:</span>
+        <input id="userName" name="userName" value="test01"/>
+        <span>密码:</span>
+        <input id="pwd" name="pwd" value="abd123"/>
+        <button id="login" style="width: 80px; margin-left: -6px;">登录</button>
+    </div>
+    <div class="serviceInfo" style="min-width: 1355px;">
+        <div class="service">
+            <div>设备列表</div>
+            <div id="resourceTree" class="resourceTree" ></div>
+        </div>
+
+        <div class="video_window">
+            <div>视频窗口</div>
+            <div class="video_window_items">
+                <div class="video_window_item">
+                    <div class="video" id="video11">
+                    </div>
+                </div>
+                <div class="video_window_item">
+                    <div class="video" id="video12">
+                    </div>
+                </div>
+                <div class="video_window_item">
+                    <div class="video" id="video13">
+                    </div>
+                </div>
+                <div class="video_window_item">
+                    <div class="video" id="video14">
+                    </div>
+                </div>
+            </div>
+            <div class="video_window_items">
+                <div class="video_window_item">
+                    <div class="video" id="video21">
+                    </div>
+                </div>
+                <div class="video_window_item">
+                    <div class="video" id="video22">
+                    </div>
+                </div>
+                <div class="video_window_item">
+                    <div class="video" id="video23">
+                    </div>
+                </div>
+                <div class="video_window_item">
+                    <div class="video" id="video24">
+                    </div>
+                </div>
+            </div>
+            <div class="video_window_items">
+                <div class="video_window_item">
+                    <div class="video" id="video31">
+                    </div>
+                </div>
+                <div class="video_window_item">
+                    <div class="video" id="video32">
+                    </div>
+                </div>
+                <div class="video_window_item">
+                    <div class="video" id="video33">
+                    </div>
+                </div>
+                <div class="video_window_item">
+                    <div class="video" id="video34">
+                    </div>
+                </div>
+            </div>
+            <div>定位信息</div>
+            <textarea class="location_info" id="location_info" readonly="readonly">
+            </textarea>
+        </div>
+
+        <div class="play_param">
+            <div class="play_tool">
+                <div class="play_tool_item">
+                    <input class="close" type="button" value="关闭" onclick="WebClient.StopVideo()">
+                    <input class="audio" type="button" value="音频" onclick="WebClient.ClickAudioRes()">
+                    <input class="talk" type="button" value="对讲" onclick="WebClient.ClickTalkbackRes()">
+                    <input class="location" type="button" value="定位" onclick="WebClient.ClickLocationRes()">
+                </div>
+                <div class="play_tool_item">
+                    <input class="top" type="button" value="向上" onmousedown="WebClient.StartTurePtz(WebClient.PtzTureType.PTZ_TURN_UP)"
+                           onmouseup="WebClient.StopTurePtz()">
+                    <input class="bottom" type="button" value="向下" onmousedown="WebClient.StartTurePtz(WebClient.PtzTureType.PTZ_TURN_DOWN)"
+                           onmouseup="WebClient.StopTurePtz()">
+                    <input class="left" type="button" value="向左" onmousedown="WebClient.StartTurePtz(WebClient.PtzTureType.PTZ_TURN_LEFT)"
+                           onmouseup="WebClient.StopTurePtz()">
+                    <input class="right" type="button" value="向右" onmousedown="WebClient.StartTurePtz(WebClient.PtzTureType.PTZ_TURN_RIGHT)"
+                           onmouseup="WebClient.StopTurePtz()">
+                </div>
+            </div>
+            <div class="paramSet">
+                <div>系统参数设置</div>
+                <div style="border:1px solid grey; height: 100px; width: 200px;">
+                    <p class="definition">
+                        <span style="margin-left:5px;">清晰度:</span>
+                        <input type="number" id="def" min="1" max="100" name="def" onkeyup="WebClient.limitInput(this);"
+                               style="margin-left:3px; padding: 3px;margin-right:5px;width:70px;"/>
+                        <input class="definition" type="button" value="提交" onclick="WebClient.SetDefinition()"/>
+                    </p>
+
+                    <p class="volume">
+                        <span style="margin-left:20px;">音量:</span>
+                        <input type="number" id="vol" min="1" max="100" name="vol" onkeyup="WebClient.limitInput(this);"
+                               style="margin-left:3px; padding: 3px;margin-right:5px;width:70px;"/>
+                        <input class="volume" type="submit" value="提交" onclick="WebClient.SetAudVolume()"/>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="js/jquery.js"></script>
+<script type="text/javascript" src="js/jquery-1.6.1.min.js"></script>
+<script type="text/javascript" src="js/ccplugin/NPCCEnum.js"></script>
+<script type="text/javascript" src="js/ccplugin/NPCCErrorCode.js"></script>
+<script type="text/javascript" src="js/ccplugin/NPCCStruct.js"></script>
+<script type="text/javascript" src="js/ccplugin/NPCCUtils.js"></script>
+<script type="text/javascript" src="js/ccplugin/NPCCInterface.js"></script>
+<script type="text/javascript" src="js/ccplugin/NPCCInterlayer.js"></script>
+<script type="text/javascript" src="index.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "version": 0.1,
+  "siteName": "微服务管理平台",
+  "minSiteMame": "微+",
+  "showErrorTips": false,
+  "defaultTheme": "#2f4050",
+  "requestTimeout": 60000,
+  "serverPort": 8088,
+  "productionSourceMap": true,
+  "backServerType": "soa",
+  "backServerRoot": "http://117.131.33.213:8002/pdaqfh",
+  "parentDirectory": "E:/Repository/direwolf-cloud-separation/",
+  "projectContext": "/pdaqfh-app",
+  "authServiceConfig": {
+    "gatewayRoute": "/auth"
+  },
+  "sysServiceConfig": {
+    "context": "/sys-app",
+    "adminPath": "/a",
+    "gatewayRoute": "/sys"
+  }
+}

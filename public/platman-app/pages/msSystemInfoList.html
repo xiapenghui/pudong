@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>微服务系统信息管理</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="/common-assets/css/normalize.css"/>
+    <!-- 引入样式 -->
+    <link id="elementThemeG" rel="stylesheet" class="elementTheme"
+          href="/common-assets/plugins/element-ui/lib/theme-chalk/element-green.css">
+    <link id="elementThemeR" rel="stylesheet" class="elementTheme"
+          href="/common-assets/plugins/element-ui/lib/theme-chalk/element-red.css">
+    <link id="elementThemeD" rel="stylesheet" class="elementTheme"
+          href="/common-assets/plugins/element-ui/lib/theme-chalk/element-default.css">
+    <link rel="stylesheet" href="/common-assets/css/dwElementUI.css"/>
+
+    <script src="/common-assets/js/jquery-2.1.1.js"></script>
+    <script src="/common-assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="/common-assets/plugins/layer/3.0.3/layer.js"></script>
+    <script src="/common-assets/plugins/dotize/dotize.js"></script>
+    <script src="/common-assets/js/promise-polyfill.min.js"></script>
+    <!-- 开发阶段使用vue.js以获取编译信息 -->
+    <script src="/common-assets/plugins/vue/2.5.17/vue.min.js"></script>
+    <script src="/common-assets/plugins/axios/0.18.0/axios.min.js"></script>
+    <!-- 引入组件库 -->
+    <script src="/common-assets/plugins/element-ui/lib/index.js"></script>
+    <script src="/common-assets/js/common.js"></script>
+    <script src="/common-assets/js/storageEvent.js"></script>
+</head>
+<body class="pace-done gray-bg">
+<div class="container-fluid">
+    <div class="wrapper-cont" id="msSystemInfoListContent" v-cloak>
+        <el-card class="box-card search-content" shadow="hover">
+            <el-form label-position="right" size="small" label-width="100px" id="msSystemInfoSearchForm"
+                     :model="searchParams">
+                <el-row :gutter="15">
+                    <el-col :span="6">
+                        <el-form-item label="编码">
+                            <el-input placeholder="请输入编码" v-model="searchParams.sysCode">
+                            </el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-form-item label="名称">
+                            <el-input placeholder="请输入名称" v-model="searchParams.sysName">
+                            </el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-form-item label="业务域">
+                            <el-select v-model="searchParams.sysDomain" placeholder="请选择业务域">
+                                <el-option v-for="param in getDictByField('sysDomain')"
+                                           :key="param.id" :label="param.paramName"
+                                           :value="param.paramCode">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-form-item label="是否可用">
+                            <el-select v-model="searchParams.valid" placeholder="请选择是否可用">
+                                <el-option v-for="param in getDictByField('valid')"
+                                           :key="param.id" :label="param.paramName"
+                                           :value="param.paramCode">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :offset="16" :span="8">
+                        <el-form-item class="search-content-button-container">
+                            <el-button-group>
+                                <el-button type="primary" size="small" @click="refreshTable"
+                                           icon="el-icon-search">查询
+                                </el-button>
+                                <el-button size="small" @click="resetSearchParam"
+                                           icon="el-icon-refresh">重置
+                                </el-button>
+                            </el-button-group>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+            </el-form>
+        </el-card>
+        <el-card class="box-card" shadow="hover">
+            <el-button-group v-if="editType !== 'view'">
+                <el-button @click="addNewMsSystemInfo" size="mini" icon="el-icon-plus">新增
+                </el-button>
+                <el-button @click="deleteSelectedMsSystemInfo" type="danger" size="mini"
+                           icon="el-icon-delete">删除
+                </el-button>
+                <el-button @click="editMsSystemInfoRecord" size="mini" icon="el-icon-edit">修改
+                </el-button>
+                <el-button @click="configSystemInfo" size="mini" icon="el-icon-setting">系统配置
+                </el-button>
+            </el-button-group>
+            <el-table size="medium" stripe border tooltip-effect="dark" v-loading="systemInfoLoading"
+                      style="width: 100%;margin-top: 15px;margin-bottom: 15px;"
+                      ref="msSystemInfoTable" :data="msSystemInfoTablePage.list" @row-click="handleRowClick"
+                      @sort-change="handleSortChange" @selection-change="handleSelectionChange">
+                <el-table-column type="selection" width="55"></el-table-column>
+                <el-table-column prop="sysCode" fixed label="编码" sortable="custom" width="150px">
+                    <template slot-scope="scope">
+                        <a @click="viewSelectedMsSystemInfo(scope)">{{scope.row.sysCode}}</a>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="sysName" fixed label="名称" show-overflow-tooltip width="200px">
+                </el-table-column>
+                <el-table-column prop="sysDomain" label="业务域" width="150px">
+                    <template slot-scope="scope">{{eleTableColumnFormatter(scope,
+                        getDictByField(scope.column.property))}}
+                    </template>
+                </el-table-column>
+                <el-table-column prop="rootPath" label="根路径" show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="valid" label="是否可用" width="100px">
+                    <template slot-scope="scope">{{eleTableColumnFormatter(scope,
+                        getDictByField(scope.column.property))}}
+                    </template>
+                </el-table-column>
+                <el-table-column prop="maxAppInstanceNum" label="最大服务实例数" width="150px">
+                </el-table-column>
+                <el-table-column prop="modifyTime" label="最后修改时间" sortable="custom" show-overflow-tooltip
+                                 width="170px">
+                </el-table-column>
+            </el-table>
+            <el-pagination layout="total, sizes, ->, prev, pager, next, jumper"
+                           :total="msSystemInfoTablePage.count" @size-change="handleTableSizeChange"
+                           @current-change="handleTableCurrentChange" :page-sizes="[5, 10, 15, 20]"
+                           :page-size="5" background></el-pagination>
+            <!-- 子表列表 -->
+            <el-tabs value="msSystemAdminTab" type="border-card" style="margin-top: 15px;" v-if="editType !== 'view'">
+                <el-tab-pane label="租户信息" name="msSystemAdminTab">
+                    <el-button-group>
+                        <el-button size="mini" icon="el-icon-plus"
+                                   @click="addNewMsSystemAdmin">新增
+                        </el-button>
+                        <el-button type="danger" size="mini" icon="el-icon-delete"
+                                   @click="deleteSelectedMsSystemAdmin">删除
+                        </el-button>
+                    </el-button-group>
+                    <el-table size="medium" stripe border tooltip-effect="dark"
+                              style="width: 100%;margin-top: 15px;margin-bottom: 15px;"
+                              ref="msSystemAdminTable" :data="msSystemAdminTablePage.list"
+                              @row-click="handleMsSystemAdminRowClick">
+                        <el-table-column type="selection" width="55"></el-table-column>
+                        <el-table-column prop="admin.userAccount" label="账号" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <a @click="viewSelectedMsSystemAdmin(scope)">{{scope.row.admin.userAccount}}</a>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="admin.userName" label="姓名" show-overflow-tooltip>
+                        </el-table-column>
+                        <el-table-column prop="admin.email" label="邮箱" show-overflow-tooltip>
+                        </el-table-column>
+                        <el-table-column prop="admin.mobile" label="电话" show-overflow-tooltip>
+                        </el-table-column>
+                        <el-table-column prop="admin.empNo" label="员工编号" show-overflow-tooltip>
+                        </el-table-column>
+                        <el-table-column prop="admin.userStatus" label="账户状态" show-overflow-tooltip>
+                            <template slot-scope="scope">{{eleTableColumnFormatter(scope,
+                                getDictByField(scope.column.property))}}
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <el-pagination layout="total, sizes, ->, prev, pager, next, jumper"
+                                   :total="msSystemAdminTablePage.count"
+                                   @size-change="handleMsSystemAdminTableSizeChange"
+                                   @current-change="handleMsSystemAdminTableCurrentChange"
+                                   :page-sizes="[5, 10, 15, 20]" :page-size="5"
+                                   background></el-pagination>
+                </el-tab-pane>
+            </el-tabs>
+        </el-card>
+    </div>
+</div>
+</body>
+<!-- 本页面对应JS-->
+<script src="../static/js/msSystemInfoList.js"></script>
+</html>

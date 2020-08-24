@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>系统参数管理</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="/common-assets/css/normalize.css"/>
+    <!-- 引入样式 -->
+    <link id="elementThemeG" rel="stylesheet" class="elementTheme"
+          href="/common-assets/plugins/element-ui/lib/theme-chalk/element-green.css">
+    <link id="elementThemeR" rel="stylesheet" class="elementTheme"
+          href="/common-assets/plugins/element-ui/lib/theme-chalk/element-red.css">
+    <link id="elementThemeD" rel="stylesheet" class="elementTheme"
+          href="/common-assets/plugins/element-ui/lib/theme-chalk/element-default.css">
+    <link rel="stylesheet" href="/common-assets/css/dwElementUI.css"/>
+
+    <script src="/common-assets/js/jquery-2.1.1.js"></script>
+    <script src="/common-assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="/common-assets/plugins/layer/3.0.3/layer.js"></script>
+    <script src="/common-assets/js/promise-polyfill.min.js"></script>
+    <script src="/common-assets/plugins/vue/2.5.17/vue.min.js"></script>
+    <script src="/common-assets/plugins/axios/0.18.0/axios.min.js"></script>
+    <script src="/common-assets/plugins/dotize/dotize.js"></script>
+    <!-- 引入组件库 -->
+    <script src="/common-assets/plugins/element-ui/lib/index.js"></script>
+    <script src="/common-assets/js/common.js"></script>
+    <script src="/common-assets/js/storageEvent.js"></script>
+</head>
+<body class="pace-done white-bg">
+<div class="container-fluid">
+    <el-form label-position="right" size="small" label-width="100px" class="with-border"
+             ref="msSecurityStrategyConfigForm" id="msSecurityStrategyConfigForm" :model="entity" :rules="rules"
+             v-cloak>
+        <el-row type="flex" justify="center">
+            <el-col :span="12">
+                <el-form-item prop="application" label="服务名称">
+                    <!--<el-input v-if="editType=='edit'" placeholder="请选择服务名称" v-model="entity.application"-->
+                    <!--:disabled="editType === 'edit'">-->
+                    <!--</el-input>-->
+                    <el-select v-model="entity.application" placeholder="请选择服务名称" :disabled="editType === 'edit'">
+                        <el-option
+                                v-for="item in applicationSelect"
+                                :key="item.serviceCode"
+                                :label="item.serviceName"
+                                :value="item.serviceCode">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+            </el-col>
+            <el-col :span="12">
+                <el-form-item prop="profile" label="环境">
+                    <!--<el-input placeholder="请输入环境" v-model="entity.profile" :disabled="editType === 'edit'"></el-input>-->
+                    <el-select :disabled="editType === 'edit'" v-model="entity.profile" filterable allow-create
+                               default-first-option placeholder="请选择环境 / 自定义">
+                        <el-option
+                                v-for="item in profileSelect"
+                                :value="item"
+                                :label="item">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+            </el-col>
+        </el-row>
+        <el-row type="flex" justify="left">
+            <el-col :span="12">
+                <el-form-item prop="label" label="分支">
+                    <!--<el-input placeholder="请输入分支" v-model="entity.label"-->
+                    <!--:disabled="editType === 'edit'"></el-input>-->
+                    <el-select :disabled="editType === 'edit'" v-model="entity.label" filterable allow-create
+                               default-first-option placeholder="请选择分支 / 自定义">
+                        <el-option
+                                v-for="item in labelSelect"
+                                :value="item"
+                                :label="item">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+            </el-col>
+        </el-row>
+        <el-row type="flex" justify="center">
+            <el-col :span="12">
+                <el-form-item prop="sysParamCode" label="配置项">
+                    <el-input placeholder="请选择服务名称" v-model="entity.sysParamCode">
+                    </el-input>
+                </el-form-item>
+            </el-col>
+            <el-col :span="12">
+                <el-form-item prop="sysParamValue" label="参数值">
+                    <el-input placeholder="请输入环境" v-model="entity.sysParamValue"></el-input>
+                </el-form-item>
+            </el-col>
+        </el-row>
+    </el-form>
+</div>
+</body>
+<!-- 本页面对应JS-->
+<script src="../static/js/msSystemConfigCenterForm.js"></script>
+</html>

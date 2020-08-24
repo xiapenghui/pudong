@@ -1,0 +1,7 @@
+node_modules
+build
+/.idea
+*.[0-9].vue
+*.[0-9].*
+/.vs
+/.vscode

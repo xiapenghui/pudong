@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>业务表管理</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet"
+          href="/common-assets/plugins/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="/common-assets/plugins/outdated/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/common-assets/css/outdated/style.css"/>
+
+    <link rel="stylesheet"
+          href="/common-assets/plugins/outdated/metisMenu/2.7/metisMenu.min.css"/>
+    <link rel="stylesheet"
+          href="/common-assets/plugins/outdated/bootstrap-toastr/2.0.1/toastr.min.css"/>
+    <link rel="stylesheet" href="/common-assets/plugins/outdated/icheck/custom.css"/>
+
+    <script src='/common-assets/js/jquery-2.1.1.js'></script>
+
+    <script src="/common-assets/js/outdated/bootstrap.min.js"></script>
+    <script src="/common-assets/js/outdated/jquery.form-3.51.0.min.js"></script>
+
+    <script src="/common-assets/plugins/layer/3.0.3/layer.js"></script>
+
+    <script src="/common-assets/plugins/outdated/pace/pace.min.js"></script>
+    <script src="/common-assets/plugins/outdated/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="/common-assets/plugins/outdated/bootstrap-toastr/2.0.1/toastr.min.js"></script>
+    <script src="/common-assets/plugins/outdated/jquery-validation/jquery.validate-1.11.1.min.js"></script>
+    <script src="/common-assets/plugins/outdated/jquery-validation/localization/messages_zh.js"></script>
+    <script src="/common-assets/plugins/outdated/icheck/icheck.min.js"></script>
+    <script src="/common-assets/plugins/outdated/metisMenu/2.7/metisMenu.js"></script>
+    <script src="/common-assets/plugins/dotize/dotize.js"></script>
+    <script src="/common-assets/js/promise-polyfill.min.js"></script>
+    <!-- 开发阶段使用vue.js以获取编译信息 -->
+    <script src="/common-assets/plugins/vue/2.5.17/vue.min.js"></script>
+    <script src="/common-assets/plugins/axios/0.18.0/axios.min.js"></script>
+    <link rel="stylesheet"
+          href="/common-assets/plugins/outdated/chosen/1.6.2/chosen.css"/>
+    <script src="/common-assets/plugins/outdated/chosen/1.6.2/chosen.jquery.js"></script>
+</head>
+<body class="pace-done white-bg">
+<form id="inputForm" method="post" class="form-horizontal" action="/api/codegen/a/codegen/importTableFromDB">
+    <input type="hidden" name="dataLogicType" v-model="entity.dataLogicType">
+    <input type="hidden" name="name" v-model="entity.name">
+    <table class="table table-bordered">
+        <tbody>
+        <tr>
+            <td class="width-15 active" width="100px"><label class="pull-right"><span
+                    style="color: red; ">*</span>数据源:</label></td>
+            <td class="width-85">
+                <select name="genDatasource.id" v-model="entity.genDatasource.id" class="form-control required"
+                        id="selectDataSource">
+                    <option value=""> -- 选择数据源 --</option>
+                    <option v-for="item in datasourceList" :key="item.id" :value="item.id">{{item.nameAndType}}</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td class="width-15 active" width="100px"><label class="pull-right"><span
+                    style="color: red; ">*</span>来源名称:</label></td>
+            <td class="width-85">
+                <select v-model="entity.name" class="form-control required" id="selectName">
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td class="width-15 active" width="100px"><label class="pull-right"><span
+                    style="color: red; ">*</span>记录别名:</label></td>
+            <td class="width-85">
+                <input v-model="entity.tableAlias" name="tableAlias" id="tableAlias"
+                       class="form-control required" maxlength="100"/>
+                <span class="help-inline">请填写当前记录的别名，与其他相同来源记录区分</span></td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+</body>
+<script src="/common-assets/js/outdated/common.js"></script>
+<script src="../static/js/importTableFromDB.js"></script>
+</html>

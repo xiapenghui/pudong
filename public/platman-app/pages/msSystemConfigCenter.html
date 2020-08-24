@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>系统配置中心</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="/common-assets/css/normalize.css"/>
+    <!-- 引入样式 -->
+    <link id="elementThemeG" rel="stylesheet" class="elementTheme"
+          href="/common-assets/plugins/element-ui/lib/theme-chalk/element-green.css">
+    <link id="elementThemeR" rel="stylesheet" class="elementTheme"
+          href="/common-assets/plugins/element-ui/lib/theme-chalk/element-red.css">
+    <link id="elementThemeD" rel="stylesheet" class="elementTheme"
+          href="/common-assets/plugins/element-ui/lib/theme-chalk/element-default.css">
+    <link rel="stylesheet" href="/common-assets/css/dwElementUI.css"/>
+
+    <script src="/common-assets/js/jquery-2.1.1.js"></script>
+    <script src="/common-assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="/common-assets/plugins/layer/3.0.3/layer.js"></script>
+    <script src="/common-assets/plugins/dotize/dotize.js"></script>
+    <script src="/common-assets/js/promise-polyfill.min.js"></script>
+    <!-- 开发阶段使用vue.js以获取编译信息 -->
+    <script src="/common-assets/plugins/vue/2.5.17/vue.min.js"></script>
+    <script src="/common-assets/plugins/axios/0.18.0/axios.min.js"></script>
+    <!-- 引入组件库 -->
+    <script src="/common-assets/plugins/element-ui/lib/index.js"></script>
+</head>
+<body class="pace-done gray-bg">
+<div class="container-fluid">
+    <div class="wrapper-cont" id="msSecurityStrategyConfigListContent" v-cloak>
+        <el-card class="box-card search-content" shadow="hover">
+            <el-form label-position="right" size="small" label-width="100px" id="msSecurityStrategyConfigSearchForm"
+                     :model="searchParams">
+                <el-row :gutter="15">
+                    <el-col :span="8">
+                        <el-form-item label="服务名称">
+                            <el-select v-model="searchParams.application" placeholder="请选择服务名称"
+                                       @change="changeApplicationSelect()">
+                                <el-option
+                                        v-for="item in applicationSelect"
+                                        :key="item.serviceCode"
+                                        :label="item.serviceName"
+                                        :value="item.serviceCode">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-form-item label="环境">
+                            <el-select v-model="searchParams.profile" placeholder="请选择环境"
+                                       @change="changeProfileSelect()">
+                                <el-option
+                                        v-for="item in profileSelect"
+                                        :value="item">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-form-item label="分支">
+                            <el-select v-model="searchParams.label" placeholder="请选择分支">
+                                <el-option
+                                        v-for="item in labelSelect"
+                                        :value="item">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row :gutter="15">
+                    <el-col :span="2">
+                        <el-form-item v-if="!!sysId" class="search-content-button-container">
+                            <el-button-group>
+                                <el-button type="primary" size="small" @click="backToLastHtml()"
+                                           icon="el-icon-back">返回
+                                </el-button>
+                            </el-button-group>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="8" :offset="14">
+                        <el-form-item class="search-content-button-container">
+                            <el-button-group>
+                                <el-button type="primary" size="small" @click="refreshTable"
+                                           icon="el-icon-search">查询
+                                </el-button>
+                                <el-button size="small" @click="resetSearchParam"
+                                           icon="el-icon-refresh">重置
+                                </el-button>
+                            </el-button-group>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+            </el-form>
+        </el-card>
+        <el-card class="box-card" shadow="hover">
+            <el-button-group v-if="editType !== 'view'">
+                <el-button @click="addNewSysParam" size="mini" icon="el-icon-plus">新增
+                </el-button>
+                <el-button @click="deleteSelectedSysParam" type="danger" size="mini"
+                           icon="el-icon-delete">删除
+                </el-button>
+                <el-button @click="editSelectedSysParam" size="mini" icon="el-icon-edit">编辑
+                </el-button>
+            </el-button-group>
+            <el-table size="medium" stripe border tooltip-effect="dark" v-loading="msSecurityStrategyConfigTableLoading"
+                      style="width: 100%;margin-top: 15px;margin-bottom: 15px;" ref="msSecurityStrategyConfigTable"
+                      :data="msSecurityStrategyConfigTablePage.list" @row-click="handleRowClick"
+                      @sort-change="handleSortChange">
+                <el-table-column type="selection" width="55"></el-table-column>
+                <el-table-column prop="sysParamCode" label="配置项" sortable=true show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="sysParamValue" label="参数值" sortable=true show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="application" label="服务名称" sortable=true show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="profile" label="环境" sortable=true show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="label" label="分支" sortable=true show-overflow-tooltip>
+                </el-table-column>
+            </el-table>
+            <el-pagination layout="total, sizes, ->, prev, pager, next, jumper"
+                           :total="msSecurityStrategyConfigTablePage.count" @size-change="handleTableSizeChange"
+                           @current-change="handleTableCurrentChange" :page-sizes="[5, 10, 15, 20]"
+                           :page-size="5" background></el-pagination>
+            </el-tabs>
+        </el-card>
+    </div>
+</div>
+</body>
+<script src="/common-assets/js/storageEvent.js"></script>
+<script src="/common-assets/js/common.js"></script>
+<!-- 本页面对应JS-->
+<script src="../static/js/msSystemConfigCenter.js"></script>
+
+</html>

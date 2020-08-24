@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>系统字典表管理</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet"
+          href="/common-assets/plugins/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="/common-assets/plugins/outdated/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/common-assets/css/outdated/style.css"/>
+
+    <link rel="stylesheet"
+          href="/common-assets/plugins/outdated/metisMenu/2.7/metisMenu.min.css"/>
+    <link rel="stylesheet"
+          href="/common-assets/plugins/outdated/bootstrap-toastr/2.0.1/toastr.min.css"/>
+    <link rel="stylesheet" href="/common-assets/plugins/outdated/icheck/custom.css"/>
+
+    <script src='/common-assets/js/jquery-2.1.1.js'></script>
+
+    <script src="/common-assets/js/outdated/bootstrap.min.js"></script>
+    <script src="/common-assets/js/outdated/jquery.form-3.51.0.min.js"></script>
+
+    <script src="/common-assets/plugins/layer/3.0.3/layer.js"></script>
+
+    <script src="/common-assets/plugins/outdated/pace/pace.min.js"></script>
+    <script src="/common-assets/plugins/outdated/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="/common-assets/plugins/outdated/bootstrap-toastr/2.0.1/toastr.min.js"></script>
+    <script src="/common-assets/plugins/outdated/jquery-validation/jquery.validate-1.11.1.min.js"></script>
+    <script src="/common-assets/plugins/outdated/jquery-validation/localization/messages_zh.js"></script>
+    <script src="/common-assets/plugins/outdated/icheck/icheck.min.js"></script>
+    <script src="/common-assets/plugins/outdated/metisMenu/2.7/metisMenu.js"></script>
+    <script src="/common-assets/plugins/dotize/dotize.js"></script>
+    <script src="/common-assets/js/promise-polyfill.min.js"></script>
+    <!-- 开发阶段使用vue.js以获取编译信息 -->
+    <script src="/common-assets/plugins/vue/2.5.17/vue.min.js"></script>
+    <script src="/common-assets/plugins/axios/0.18.0/axios.min.js"></script>
+    <!-- 引入组件库 -->
+    <script src="/common-assets/plugins/element-ui/lib/index.js"></script>
+</head>
+<body class="pace-done white-bg">
+<div class="container-fluid mt15">
+    <form id="paramClassForm" :action="WEB_ROOT + '/sys/paramClass/save'" v-cloak  method="post" class="form-horizontal">
+        <input type="hidden" name="id" id="id" v-model="entity.id"/>
+        <table class="table table-bordered">
+            <tbody>
+            <tr>
+                <td class="col-sm-2 active"><label class="control-label pull-right"><font
+                        color="red">*</font>系统代码：</label></td>
+                <td class="col-sm-4">
+                    <input name="classCode" id="classCode" v-model="entity.classCode"
+                           maxlength="60" class="form-control required"
+                           :disabled="editType === 'view'"/></td>
+                <td class="col-sm-2 active"><label class="control-label pull-right"><font
+                        color="red">*</font>名称：</label></td>
+                <td class="col-sm-4">
+                    <input name="className" id="className" v-model="entity.className"
+                           maxlength="255" class="form-control required"
+                           :disabled="editType === 'view'"/></td>
+            </tr>
+            <tr>
+                <td class="col-sm-2 active"><label class="control-label pull-right">扩展配置：</label></td>
+                <td class="col-sm-4">
+                    <input name="classDesc" id="classDesc" v-model="entity.classDesc"
+                           maxlength="255" class="form-control "
+                           :disabled="editType === 'view'"/></td>
+                <input type="hidden" name="appId" id="appId" v-model="entity.appId"/>
+              <!--  <td class="col-sm-2 active"><label class="control-label pull-right"><font
+                        color="red">*</font>子系统：</label></td>
+                <td class="col-sm-4">
+                    <select name="appId" id="appId" v-model="entity.appId" :disabled="editType === 'view'"
+                            class="form-control required">
+                        <option v-for="param in enTimeLimitDict" :key="param.id" :value="param.appName">
+                        {{param.paramName}}
+                        </option>
+                    </select>
+                </td>-->
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+</body>
+<script src="/common-assets/js/outdated/common.js"></script>
+<!-- 本页面对应JS-->
+<script src="../static/js/paramClassForm.js"></script>
+</html>

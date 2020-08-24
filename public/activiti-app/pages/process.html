@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="/common-assets/plugins/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="/common-assets/plugins/outdated/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/common-assets/css/outdated/style.css"/>
+
+    <link rel="stylesheet" href="/common-assets/plugins/outdated/metisMenu/2.7/metisMenu.min.css"/>
+    <link rel="stylesheet" href="/common-assets/plugins/outdated/bootstrap-toastr/2.0.1/toastr.min.css"/>
+    <link rel="stylesheet" href="/common-assets/plugins/outdated/icheck/custom.css"/>
+
+    <script src='/common-assets/js/jquery-2.1.1.js'></script>
+
+    <script src="/common-assets/js/outdated/bootstrap.min.js"></script>
+    <script src="/common-assets/js/outdated/jquery.form-3.51.0.min.js"></script>
+
+    <script src="/common-assets/plugins/layer/3.0.3/layer.js"></script>
+
+    <script src="/common-assets/plugins/outdated/pace/pace.min.js"></script>
+    <script src="/common-assets/plugins/outdated/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="/common-assets/plugins/outdated/bootstrap-toastr/2.0.1/toastr.min.js"></script>
+    <script src="/common-assets/plugins/outdated/jquery-validation/jquery.validate-1.11.1.min.js"></script>
+    <script src="/common-assets/plugins/outdated/jquery-validation/localization/messages_zh.js"></script>
+    <script src="/common-assets/plugins/outdated/icheck/icheck.min.js"></script>
+    <script src="/common-assets/plugins/outdated/metisMenu/2.7/metisMenu.js"></script>
+    <script src="/common-assets/plugins/dotize/dotize.js"></script>
+    <script src="/common-assets/js/promise-polyfill.min.js"></script>
+    <!-- 开发阶段使用vue.js以获取编译信息 -->
+    <script src="/common-assets/plugins/vue/2.5.17/vue.min.js"></script>
+    <script src="/common-assets/plugins/axios/0.18.0/axios.min.js"></script>
+    <!-- 加密相关 -->
+    <script src="/common-assets/plugins/crypto/aes.js"></script>
+    <script src="/common-assets/plugins/crypto/AesUtil.js"></script>
+    <script src="/common-assets/plugins/crypto/hmac-sha256.js"></script>
+    <script src="/common-assets/plugins/crypto/pbkdf2.js"></script>
+    <script src="/common-assets/plugins/crypto/pad-zeropadding.js"></script>
+    <script src="/common-assets/plugins/jsencrypt/jsencrypt.js"></script>
+    <!-- 引入组件库 -->
+    <script src="/common-assets/plugins/element-ui/lib/index.js"></script>
+    <link rel="stylesheet" href="/common-assets/plugins/outdated/bootstrap-table/1.11.1/css/bootstrap-table.min.css">
+    <link rel="stylesheet" href="/common-assets/plugins/jquery-ztree/3.5/css/metroStyle/metroStyle.css">
+    <link rel="stylesheet" href="/common-assets/css/outdated/page.css">
+    <script src="/common-assets/plugins/outdated/bootstrap-table/1.11.1/js/bootstrap-table.min.js"></script>
+    <script src="/common-assets/plugins/outdated/bootstrap-table/1.11.1/js/bootstrap-table-zh-CN.min.js"></script>
+    <script src="/common-assets/plugins/jquery-ztree/3.5/js/jquery.ztree.all.min.js"></script>
+
+
+    <script src="process-editor/diagram-viewer/js/jstools.js" type="text/javascript" charset="utf-8"></script>
+    <script src="process-editor/diagram-viewer/js/raphael.js" type="text/javascript" charset="utf-8"></script>
+
+    <script src="process-editor/diagram-viewer/js/jquery/jquery.progressbar.js" type="text/javascript"
+            charset="utf-8"></script>
+    <script src="process-editor/diagram-viewer/js/jquery/jquery.asyncqueue.js" type="text/javascript"
+            charset="utf-8"></script>
+
+    <script src="process-editor/diagram-viewer/js/Color.js" type="text/javascript" charset="utf-8"></script>
+    <script src="process-editor/diagram-viewer/js/Polyline.js" type="text/javascript" charset="utf-8"></script>
+    <script src="process-editor/diagram-viewer/js/ActivityImpl.js" type="text/javascript"
+            charset="utf-8"></script>
+    <script src="process-editor/diagram-viewer/js/ActivitiRest.js" type="text/javascript"
+            charset="utf-8"></script>
+    <script src="process-editor/diagram-viewer/js/LineBreakMeasurer.js" type="text/javascript"
+            charset="utf-8"></script>
+    <script src="process-editor/diagram-viewer/js/ProcessDiagramGenerator.js" type="text/javascript"
+            charset="utf-8"></script>
+    <script src="process-editor/diagram-viewer/js/ProcessDiagramCanvas.js" type="text/javascript"
+            charset="utf-8"></script>
+
+    <script src="/common-assets/js/outdated/common.js"></script>
+
+    <style type="text/css">
+        a {
+            display: inline-block;
+        }
+    </style>
+    <title>流程图</title>
+</head>
+<body class="pace-done white-bg" style="overflow-x:scroll;">
+<div class="wrapper">
+    <div id="overlayBox">
+        <div id="diagramHolder" class="diagramHolder"></div>
+    </div>
+</div>
+
+</body>
+<script language='javascript'>
+    function doSubmit(callback) {
+        callback({
+            message: '设置节点属性成功',
+        })
+    }
+
+    $(function () {
+        var procDefId = getQueryString('procDefId')
+        initProcess(procDefId)
+        // 设置足够大小的svg画布
+        setTimeout(function setTimeout1() {
+            var svg = document.getElementsByTagName('svg')[0]
+            svg.setAttribute('height', 2000)
+            svg.setAttribute('width', 2000)
+        }, 0)
+    })
+
+    function initProcess(procDefId) {
+        var processDefinitionDiagramLayout = {laneSets: undefined}
+
+        $.ajax({
+            type: 'get',
+            async: false,
+            url: KISBPM.URL.getDiagramNode(procDefId),
+            success: function (result) {
+                processDefinitionDiagramLayout = result.data
+            },
+        })
+
+        ProcessDiagramGenerator.options = {
+            diagramHolderId: 'diagramHolder',
+            on: {
+                click: function (canvas, element, contextObject) {
+                    var mouseEvent = this
+                    var nodeType = ''
+                    if (contextObject.properties === undefined) {
+                        nodeType = 'sequenceFlow'
+                    } else {
+                        nodeType = contextObject.properties.type
+                    }
+                    openPropertyEditor(procDefId, element.id, nodeType)
+                    mouseEvent.stopPropagation()
+                },
+            },
+        }
+
+        if (processDefinitionDiagramLayout.laneSets) {
+            ProcessDiagramGenerator.generateDiagram(processDefinitionDiagramLayout)
+        } else {
+            direwolfCommonTips('warning', '请绘制流程图后再配置节点属性')
+            top.layer.closeAll()
+            throw new Error('请绘制流程图后再配置节点属性')
+        }
+    }
+
+    function openPropertyEditor(procDefId, nodeId, nodeType) {
+        var url
+        if (nodeType === 'userTask') {
+            url = KISBPM.URL.userTaskDefPage(procDefId, nodeId)
+            openDialog('用户任务节点编辑', url, {
+                width: '800px',
+                height: '500px',
+                callback: function () {
+                    initProcess(procDefId)
+                    /* toastr.success("保存成功"); */
+                },
+            })
+        } else if (nodeType === 'sequenceFlow') {
+            url = KISBPM.URL.sequenceFlowDefPage(procDefId, nodeId)
+            openDialog('连线节点编辑', url, {
+                width: '800px',
+                height: '500px',
+                callback: function () {
+                    initProcess(procDefId)
+                },
+            })
+        } else if (nodeType === 'callActivity') {
+            url = KISBPM.URL.callActivitiDefPage(procDefId, nodeId)
+            openDialog('子流程节点编辑', url, {
+                width: '800px',
+                height: '500px',
+                callback: function () {
+                    initProcess(procDefId)
+                },
+            })
+        }
+    }
+
+    var KISBPM = KISBPM || {}
+
+    KISBPM.URL = {
+        baseUrl: '/api/activiti/a/activiti',
+        getDiagramNode: function (procDefId) {
+            return this.baseUrl + '/procDef/getDiagramNode?procDefId=' + procDefId
+        },
+
+        userTaskDefPage: function (procDefId, modelNodeId) {
+            return getRelativePath() + 'userTaskDefForm.html?editType=edit&procDefId=' + procDefId + '&modelNodeId=' +
+                modelNodeId
+        },
+
+        sequenceFlowDefPage: function (procDefId, modelNodeId) {
+            return getRelativePath() + 'lineDefForm.html?editType=edit&procDefId=' + procDefId + '&modelNodeId=' +
+                modelNodeId
+        },
+
+        callActivitiDefPage: function (procDefId, modelNodeId) {
+            return getRelativePath() + 'callActivitiDefForm.html?editType=edit&procDefId=' + procDefId + '&modelNodeId=' +
+                modelNodeId
+        },
+    }
+</script>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>服务请求认证详情表管理</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="/common-assets/css/normalize.css"/>
+    <!-- 引入样式 -->
+    <link id="elementThemeG" rel="stylesheet" class="elementTheme"
+          href="/common-assets/plugins/element-ui/lib/theme-chalk/element-green.css">
+    <link id="elementThemeR" rel="stylesheet" class="elementTheme"
+          href="/common-assets/plugins/element-ui/lib/theme-chalk/element-red.css">
+    <link id="elementThemeD" rel="stylesheet" class="elementTheme"
+          href="/common-assets/plugins/element-ui/lib/theme-chalk/element-default.css">
+    <link rel="stylesheet" href="/common-assets/css/dwElementUI.css"/>
+
+    <script src="/common-assets/js/jquery-2.1.1.js"></script>
+    <script src="/common-assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="/common-assets/plugins/layer/3.0.3/layer.js"></script>
+    <script src="/common-assets/plugins/dotize/dotize.js"></script>
+    <script src="/common-assets/js/promise-polyfill.min.js"></script>
+    <!-- 开发阶段使用vue.js以获取编译信息 -->
+    <script src="/common-assets/plugins/vue/2.5.17/vue.min.js"></script>
+    <script src="/common-assets/plugins/axios/0.18.0/axios.min.js"></script>
+    <!-- 引入组件库 -->
+    <script src="/common-assets/plugins/element-ui/lib/index.js"></script>
+</head>
+<body class="pace-done gray-bg">
+<div class="container-fluid">
+    <div class="wrapper-cont" id="sysOauthClientDetailsListContent" v-cloak>
+        <el-card class="box-card search-content" shadow="hover">
+            <el-form label-position="right" size="small" label-width="100px" id="sysOauthClientDetailsSearchForm"
+                     :model="searchParams">
+                <el-row :gutter="15">
+                    <el-col :span="8">
+                        <el-form-item label="客户端ID">
+                            <el-input placeholder="请输入客户端ID" v-model="searchParams.clientId">
+                            </el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-form-item label="作用域">
+                            <el-input placeholder="请输入作用域" v-model="searchParams.scope">
+                            </el-input>
+                        </el-form-item>
+                    </el-col>
+                    <!--<el-col :span="8">
+                        <el-form-item label="是否自动放行">
+                            <el-select multiple v-model="searchParams.autoapprove" placeholder="请选择是否自动放行">
+                                <el-option v-for="param in getDictByField('autoapprove')" :key="param.id"
+                                           :label="param.paramName" :value="param.paramCode">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-col>-->
+                </el-row>
+                <el-row :gutter="15">
+                    <el-col :offset="16" :span="8">
+                        <el-form-item>
+                            <el-button-group>
+                                <el-button type="primary" size="small" @click="refreshTable"
+                                           icon="el-icon-search">查询
+                                </el-button>
+                                <el-button size="small" @click="resetSearchParam"
+                                           icon="el-icon-refresh">重置
+                                </el-button>
+                            </el-button-group>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+            </el-form>
+        </el-card>
+        <el-card class="box-card" shadow="hover">
+            <el-button-group>
+                <el-button @click="addNewSysOauthClientDetails" size="mini" icon="el-icon-plus">新增
+                </el-button>
+                <el-button @click="deleteSelectedSysOauthClientDetails" type="danger" size="mini"
+                           icon="el-icon-delete">删除
+                </el-button>
+                <el-button @click="editSelectedSysOauthClientDetails" size="mini" icon="el-icon-edit">修改
+                </el-button>
+            </el-button-group>
+            <el-table size="medium" stripe border tooltip-effect="dark"
+                      style="width: 100%;margin-top: 15px;margin-bottom: 15px;" ref="sysOauthClientDetailsTable"
+                      :data="sysOauthClientDetailsTablePage.list" @row-click="handleRowClick"
+                      @sort-change="handleSortChange">
+                <el-table-column type="selection" width="35"></el-table-column>
+                <el-table-column width="90" prop="clientId" label="客户端ID" sortable="custom" show-overflow-tooltip>
+                    <template slot-scope="scope">
+                        <a @click="viewSelectedMsSystemInfo(scope)">{{scope.row.clientId}}</a>
+                    </template>
+                </el-table-column>
+                <el-table-column width="105" prop="clientSecret" label="密钥" show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column width="132" prop="scope" label="作用域"  show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column prop="authorizedGrantTypes" label="授权方式"  show-overflow-tooltip>
+                    <template slot-scope="scope">{{eleTableColumnFormatter(scope,
+                        getDictByField(scope.column.property))}}
+                    </template>
+                </el-table-column>
+                <el-table-column prop="webServerRedirectUri" label="重定向URI"  show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column width="140" prop="autoapprove" label="自动放行"  show-overflow-tooltip>
+                    <template slot-scope="scope">{{eleTableColumnFormatter(scope,
+                        getDictByField(scope.column.property))}}
+                    </template>
+                </el-table-column>
+            </el-table>
+            <el-pagination layout="total, sizes, ->, prev, pager, next, jumper"
+                           :total="sysOauthClientDetailsTablePage.count" @size-change="handleTableSizeChange"
+                           @current-change="handleTableCurrentChange" :page-sizes="[5, 10, 15, 20]"
+                           :page-size="5" background></el-pagination>
+            </el-tabs>
+        </el-card>
+    </div>
+</div>
+</body>
+<script src="/common-assets/js/outdated/common.js"></script>
+<!-- 本页面对应JS-->
+<script src="../static/js/sysOauthClientDetailsList.js"></script>
+</html>

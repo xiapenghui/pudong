@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>组织单元管理</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	<meta charset="utf-8"/>
+	<meta name="viewport"
+		  content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet"
+		  href="/common-assets/plugins/font-awesome/css/font-awesome.min.css"/>
+	<link rel="stylesheet" href="/common-assets/plugins/outdated/bootstrap/css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="/common-assets/css/outdated/style.css"/>
+
+	<link rel="stylesheet"
+		  href="/common-assets/plugins/outdated/metisMenu/2.7/metisMenu.min.css"/>
+	<link rel="stylesheet"
+		  href="/common-assets/plugins/outdated/bootstrap-toastr/2.0.1/toastr.min.css"/>
+	<link rel="stylesheet" href="/common-assets/plugins/outdated/icheck/custom.css"/>
+
+	<script src='/common-assets/js/jquery-2.1.1.js'></script>
+
+	<script src="/common-assets/js/outdated/bootstrap.min.js"></script>
+	<script src="/common-assets/js/outdated/jquery.form-3.51.0.min.js"></script>
+
+	<script src="/common-assets/plugins/layer/3.0.3/layer.js"></script>
+
+	<script src="/common-assets/plugins/outdated/pace/pace.min.js"></script>
+	<script src="/common-assets/plugins/outdated/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="/common-assets/plugins/outdated/bootstrap-toastr/2.0.1/toastr.min.js"></script>
+	<script src="/common-assets/plugins/outdated/jquery-validation/jquery.validate-1.11.1.min.js"></script>
+	<script src="/common-assets/plugins/outdated/jquery-validation/localization/messages_zh.js"></script>
+	<script src="/common-assets/plugins/outdated/icheck/icheck.min.js"></script>
+	<script src="/common-assets/plugins/outdated/metisMenu/2.7/metisMenu.js"></script>
+	<script src="/common-assets/plugins/dotize/dotize.js"></script>
+	<script src="/common-assets/js/promise-polyfill.min.js"></script>
+	<!-- 开发阶段使用vue.js以获取编译信息 -->
+	<script src="/common-assets/plugins/vue/2.5.17/vue.min.js"></script>
+	<script src="/common-assets/plugins/axios/0.18.0/axios.min.js"></script>
+	<!-- 引入组件库 -->
+	<script src="/common-assets/plugins/element-ui/lib/index.js"></script>
+
+	<link rel="stylesheet"
+		  href="/common-assets/plugins/outdated/bootstrap-table/1.11.1/css/bootstrap-table.min.css">
+
+	<link rel="stylesheet"
+		  href="/common-assets/plugins/jquery-ztree/3.5/css/metroStyle/metroStyle.css">
+	<link rel="stylesheet" href="/common-assets/css/outdated/page.css">
+	<script
+			src="/common-assets/plugins/outdated/bootstrap-table/1.11.1/js/bootstrap-table.min.js"></script>
+	<script
+			src="/common-assets/plugins/outdated/bootstrap-table/1.11.1/js/bootstrap-table-zh-CN.min.js"></script>
+	<script src="/common-assets/plugins/jquery-ztree/3.5/js/jquery.ztree.all.min.js"></script>
+</head>
+<body class="pace-done gray-bg">
+<div class="container-fluid">
+	<div class="wrapper-cont" id="orgListContent" v-cloak>
+		<div class="row">
+			<div class="col-sm-3  col-lg-3">
+				<div class="ibox float-e-margins">
+					<div class="ibox-title ">
+						<h5>单位树</h5>
+						<div class="ibox-tools">
+							<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
+							</a>
+						</div>
+					</div>
+					<div class="ibox-content" id="orgTreeIbox">
+						<div class="row">
+							<div class="col-sm-12  col-lg-12">
+								<div class="input-group">
+									<input id="orgSearchName" name="单位树" type="text"
+										   class="form-control input-sm" />
+									<div class="input-group-btn">
+										<button type="button" id="orgTreeSearchBtn"
+												class="btn btn-sm btn-primary">
+											<i class="fa fa-search"></i>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="ml-10">
+							<ul id="orgTree" class="ztree"></ul>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-9 col-lg-9">
+				<div class="ibox ml-15">
+					<div class="search-content">
+						<div class="row">
+							<div class="col-md-12 col-sm-12">
+								<form id="orgSearchForm" modelAttribute="org"
+										   class="form-horizontal">
+									<div class="row">
+										<div class="col-md-4 col-sm-4">
+											<div class="form-group">
+												<label class="col-md-4 col-sm-4 control-label">组织单元名称</label>
+												<div class="col-md-8 col-sm-8">
+													<input id="orgName" name="orgName" 
+																maxlength="30" class="form-control input-sm"
+																placeholder="组织单元名称" />
+												</div>
+											</div>
+										</div>
+										<div class="col-md-4 col-sm-4">
+											<div class="form-group">
+												<label class="col-md-4 col-sm-4 control-label">组织单元代码</label>
+												<div class="col-md-8 col-sm-8">
+													<input id="orgCode" name="orgCode"
+																maxlength="60" class="form-control input-sm"
+																placeholder="组织单元代码" />
+												</div>
+											</div>
+										</div>
+										<div class="col-md-4 col-sm-4">
+											<div class="form-group">
+												<label class="col-md-4 col-sm-4 control-label">单位代码</label>
+												<div class="col-md-8 col-sm-8">
+													<input id="compCode" name="compCode" 
+																maxlength="60" class="form-control input-sm"
+																placeholder="单位代码" />
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<!--<div class="col-md-4 col-sm-4">
+                                        <div class="form-group">
+                                            <label class="col-md-4 col-sm-4 control-label">父ID</label>
+                                            <div class="col-md-8 col-sm-8">
+                                                <input id="parentId" 
+                                                    maxlength="32" class="form-control input-sm"
+                                                    placeholder="父ID" />
+                                            </div>
+                                        </div>
+                                    </div>-->
+										<div class="col-md-4 col-sm-4">
+											<div class="form-group">
+												<label class="col-md-4 col-sm-4 control-label">组织单元分类</label>
+												<div class="col-md-8 col-sm-8">
+													<select id="orgType" name="orgType"class="form-control input-sm">
+														<option value=""> --选择组织单元分类 -- </option>
+														<option v-for="(param, index) in orgTypeDict" :key="param.id"
+																:value="param.paramCode">{{param.paramName}}
+														</option>
+													</select>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-4 col-sm-4">
+											<div class="form-group">
+												<label class="col-md-4 col-sm-4 control-label">组织单元类型</label>
+												<div class="col-md-8 col-sm-8">
+													<select id="orgClass" name="orgClass" class="form-control input-sm">
+														<option value=""> -- 选择组织单元类型  -- </option>
+														<option v-for="(param, index) in orgClassDict" :key="param.id"
+																:value="param.paramCode">{{param.paramName}}
+														</option>
+													</select>
+												</div>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+						<div class="pull-right">
+							<button class="btn btn-primary btn-sm " id="orgSearchBtn">
+								<i class="fa fa-search"></i> 查询
+							</button>
+							<button class="btn btn-primary btn-outine btn-outline btn-sm "
+									id="orgResetBtn">
+								<i class="fa fa-refresh"></i> 重置
+							</button>
+						</div>
+					</div>
+					<div class="ibox-content">
+						<div class="row">
+							<div class="col-md-12 col-sm-12">
+								<!-- 工具栏 -->
+								<div id="orgTableToolbar" class="btn-group" role="group"
+									 :data-url-prefix="backendContext + '/sys/org'" data-java-class-name="org"
+									 data-function-name-simple="组织单元">
+									<button class="btn btn-sm btn-default"
+											id="addOrgBtn" title="新增记录">
+										<i class="fa fa-plus"></i> 新增
+									</button>
+								</div>
+
+								<!-- 表格， 设置sortName保证翻页数据正确，如需其他字段请自行修改-->
+								<table id="orgTable" data-id-field="id" data-toggle="table"
+									   data-cache="false" data-striped="true"
+									   data-side-pagination="server" data-pagination="true"
+									   data-click-to-select="true" data-page-size="5"
+									   data-page-list="[5,10,15,20]" data-show-columns="true"
+									   data-data-field="list" data-total-field="count" data-single-select="true"
+									   data-toolbar="#orgTableToolbar" data-buttons-class="default btn-outline btn-sm"
+									   data-minimum-count-columns="2">
+									<thead>
+									<tr>
+										<th data-checkbox="true"></th>
+
+										<th data-field="id" data-align="left" data-vlign="middle"
+											data-sortable="false" data-visible="false">主键</th>
+
+										<th data-field="orgName" data-align="left"
+											data-vlign="middle" data-sortable="true"
+											data-formatter="viewFormatter" data-events="viewEvents">组织单元名称</th>
+
+										<th data-field="orgCode" data-align="left"
+											data-vlign="middle" data-sortable="true">组织单元代码</th>
+
+										<th data-field="orgType" data-align="left"
+											data-vlign="middle" data-sortable="true"
+											data-formatter="dictsFormatter">组织单元分类</th>
+
+										<th data-field="orgClass" data-align="left"
+											data-vlign="middle" data-sortable="true"
+											data-formatter="dictsFormatter">组织单元类型</th>
+
+										<th data-field="parentId" data-align="left"
+											data-visible="false" data-vlign="middle"
+											data-sortable="true">父ID</th>
+
+										<th data-field="compCode" data-align="left"
+											data-vlign="middle" data-sortable="true">单位代码</th>
+
+										<th data-field="parentIds" data-align="left"
+											data-visible="false" data-vlign="middle"
+											data-sortable="true">所有父级别编号</th>
+
+										<th data-field="orgShortName" data-align="left"
+											data-visible="false" data-vlign="middle"
+											data-sortable="true">组织单元简称</th>
+
+										<th data-field="operate" data-align="left"
+											data-vlign="middle" data-sortable="false"
+											data-formatter="operateFormatter"
+											data-events="operateEvents">操 作</th>
+									</tr>
+									</thead>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+<script src="/common-assets/js/outdated/common.js"></script>
+<!-- 本页面对应JS-->
+<script src="../static/js/orgList.js"></script>
+</html>

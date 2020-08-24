@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet"
+          href="/common-assets/plugins/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="/common-assets/plugins/outdated/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/common-assets/css/outdated/style.css"/>
+
+    <link rel="stylesheet"
+          href="/common-assets/plugins/outdated/metisMenu/2.7/metisMenu.min.css"/>
+    <link rel="stylesheet"
+          href="/common-assets/plugins/outdated/bootstrap-toastr/2.0.1/toastr.min.css"/>
+    <link rel="stylesheet" href="/common-assets/plugins/outdated/icheck/custom.css"/>
+    <!-- 引入样式 -->
+    <link id="elementThemeG" rel="stylesheet" class="elementTheme"
+          href="/common-assets/plugins/element-ui/lib/theme-chalk/element-green.css">
+    <link id="elementThemeR" rel="stylesheet" class="elementTheme"
+          href="/common-assets/plugins/element-ui/lib/theme-chalk/element-red.css">
+    <link id="elementThemeD" rel="stylesheet" class="elementTheme"
+          href="/common-assets/plugins/element-ui/lib/theme-chalk/element-default.css">
+    <link rel="stylesheet" href="/common-assets/css/dwElementUI.css"/>
+
+    <script src='/common-assets/js/jquery-2.1.1.js'></script>
+
+    <script src="/common-assets/js/outdated/bootstrap.min.js"></script>
+    <script src="/common-assets/js/outdated/jquery.form-3.51.0.min.js"></script>
+
+    <script src="/common-assets/plugins/layer/3.0.3/layer.js"></script>
+
+    <script src="/common-assets/plugins/outdated/pace/pace.min.js"></script>
+    <script src="/common-assets/plugins/outdated/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="/common-assets/plugins/outdated/bootstrap-toastr/2.0.1/toastr.min.js"></script>
+    <script src="/common-assets/plugins/outdated/jquery-validation/jquery.validate-1.11.1.min.js"></script>
+    <script src="/common-assets/plugins/outdated/jquery-validation/localization/messages_zh.js"></script>
+    <script src="/common-assets/plugins/outdated/icheck/icheck.min.js"></script>
+    <script src="/common-assets/plugins/outdated/metisMenu/2.7/metisMenu.js"></script>
+    <script src="/common-assets/plugins/dotize/dotize.js"></script>
+    <script src="/common-assets/js/promise-polyfill.min.js"></script>
+    <!-- 开发阶段使用vue.js以获取编译信息 -->
+    <script src="/common-assets/plugins/vue/2.5.17/vue.js"></script>
+    <script src="/common-assets/plugins/axios/0.18.0/axios.min.js"></script>
+    <!-- 引入组件库 -->
+    <script src="/common-assets/plugins/element-ui/lib/index.js"></script>
+    <!-- 基础依赖-->
+    <title>生成代码</title>
+</head>
+<body class="pace-done white-bg">
+<form id="inputForm" :action="saveUrl" method="post" class="form-horizontal" v-cloak v-loading="formLoading">
+    <input type="hidden" id="id" name="id" v-model="entity.id"/>
+    <input type="hidden" id="genTable.id" name="genTable.id" v-model="entity.genTable.id"/>
+    <table class="table table-bordered  table-condensed dataTables-example dataTable no-footer">
+        <tbody>
+        <tr>
+            <td class="width-15 active"><label class="pull-right"><span
+                    style="color: red; ">*</span>代码分类:</label></td>
+            <td class="width-35">
+                <select id="category" name="category" v-model="entity.category"
+                        class="required form-control">
+                    <option v-for="item in categoryDict" :key="item.id" :value="item.paramCode">
+                        {{item.paramName}}
+                    </option>
+                </select>
+            </td>
+            <td class="width-15 active"><label class="pull-right"><span
+                    style="color: red; ">*</span>代码风格:</label></td>
+            <td class="width-35">
+                <select id="style" name="style" v-model="entity.style" class="required form-control">
+                    <option v-for="item in styleList" :key="item.style" :value="item.style">
+                        {{item.label}}
+                    </option>
+                </select>
+            </td>
+        </tr>
+        <tr style="display: none" id="relationROW">
+            <td class="width-15 active"><label class="pull-right control-label"><span
+                    style="color: red; ">*</span>关联关系:</label></td>
+            <td class="width-85" colspan=3 id="relationCELL">
+                <table id="relationTable"
+                       class="table table-striped table-bordered table-hover table-condensed dataTables-example dataTable">
+                    <thead style="font-size: 10px;">
+                    <tr>
+                        <th>主表关联字段</th>
+                        <th>从表别名</th>
+                        <th>从表关联字段</th>
+                        <th style="width: 80px">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td class="width-15 active"><label class="pull-right control-label"><span
+                    style="color: red; ">*</span>包路径:</label></td>
+            <td colspan="3">
+                <input id="packageName" name="packageName" v-model="entity.packageName"
+                       maxlength="500" class="required form-control"/>
+                <span class="help-inline">
+							生成结构：{包名}/{模块名}/{分层(dao,entity,service,web)}/{子模块名}/{java类} </span>
+            </td>
+        </tr>
+        <tr>
+            <td class="width-15 active"><label class="pull-right control-label"><span
+                    style="color: red; ">*</span>模块名:</label></td>
+            <td class="width-35">
+                <input id="moduleName" name="moduleName" v-model="entity.moduleName"
+                       maxlength="30" class="required form-control"/>
+                <span class="help-inline">可理解为子系统名，例如 sys</span></td>
+            <td class="width-15 active"><label class="pull-right control-label">子模块名:</label></td>
+            <td class="width-35">
+                <input id="subModuleName" name="subModuleName" v-model="entity.subModuleName"
+                       maxlength="30" class="form-control"/>
+                <span class="help-inline">可选，分层下的文件夹 </span></td>
+        </tr>
+        <tr>
+            <td class="width-15 active"><label class="pull-right control-label"><span
+                    style="color: red; ">*</span>功能描述:</label></td>
+            <td class="width-35">
+                <input id="functionName" name="functionName" v-model="entity.functionName"
+                       maxlength="500" class="required form-control"/>
+                <span class="help-inline">将设置到类描述</span></td>
+            <td class="width-15 active"><label class="pull-right control-label"><span
+                    style="color: red; ">*</span>功能名:</label></td>
+            <td class="width-35">
+                <input id="functionNameSimple" name="functionNameSimple" v-model="entity.functionNameSimple"
+                       maxlength="100" class="required form-control"/>
+                <span class="help-inline">用作功能提示，如：保存“某某”成功</span></td>
+        </tr>
+        <tr>
+            <td class="width-15 active"><label class="pull-right control-label"><span
+                    style="color: red; ">*</span>功能作者:</label></td>
+            <td class="width-35">
+                <input id="functionAuthor" name="functionAuthor" v-model="entity.functionAuthor"
+                       maxlength="100" class="required form-control"/>
+                <span class="help-inline">功能开发者</span></td>
+            <td class="width-15 active"><label class="pull-right">最大列数:</label></td>
+            <td class="width-35">
+                <select id="maxQueryColumns" name="maxQueryColumns" v-model="entity.maxQueryColumns"
+                        class="required form-control">
+                    <option v-for="item in maxQueryColumnsDict" :key="item.id" :value="item.paramCode">
+                        {{item.paramName}}
+                    </option>
+                </select>
+                <span class="help-inline">设置查询面板最大列数</span></td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+</body>
+<script src="/common-assets/js/outdated/common.js"></script>
+<script src="../static/js/genCodeForm.js"></script>
+</html>

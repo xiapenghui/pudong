@@ -1,0 +1,272 @@
+* {
+    padding: 0;
+    margin: 0;
+    outline: none;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 10px;
+}
+
+label {
+    margin-bottom: 0;
+    font-weight: 700;
+}
+
+a {
+    cursor: pointer;
+    color: #337ab7;
+    text-decoration: none;
+}
+
+.wrapper-cont .box-card {
+    margin-bottom: 15px;
+}
+
+.wrapper-cont .box-card:last-child {
+    margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+    .wrapper-cont .ml-15 {
+        margin-left: 0 !important;
+        margin-top: 15px !important;
+    }
+}
+
+[v-cloak] > * {
+    display: none;
+}
+
+/*[v-cloak]::before { display:block;width:105px;height:105px;text-align:center;content: " ";background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTA1IiBoZWlnaHQ9IjEwNSIgdmlld0JveD0iMCAwIDEwNSAxMDUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgZmlsbD0iIzZmOTliOSI+CiAgICA8Y2lyY2xlIGN4PSIxMi41IiBjeT0iMTIuNSIgcj0iMTIuNSI+CiAgICAgICAgPGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iZmlsbC1vcGFjaXR5IiBiZWdpbj0iMHMiIGR1cj0iMXMiIHZhbHVlcz0iMTsuMjsxIiBjYWxjTW9kZT0ibGluZWFyIiByZXBlYXRDb3VudD0iaW5kZWZpbml0ZSIvPgogICAgPC9jaXJjbGU+CiAgICA8Y2lyY2xlIGN4PSIxMi41IiBjeT0iNTIuNSIgcj0iMTIuNSIgZmlsbC1vcGFjaXR5PSIuNSI+CiAgICAgICAgPGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iZmlsbC1vcGFjaXR5IiBiZWdpbj0iMTAwbXMiIGR1cj0iMXMiIHZhbHVlcz0iMTsuMjsxIiBjYWxjTW9kZT0ibGluZWFyIiByZXBlYXRDb3VudD0iaW5kZWZpbml0ZSIvPgogICAgPC9jaXJjbGU+CiAgICA8Y2lyY2xlIGN4PSI1Mi41IiBjeT0iMTIuNSIgcj0iMTIuNSI+CiAgICAgICAgPGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iZmlsbC1vcGFjaXR5IiBiZWdpbj0iMzAwbXMiIGR1cj0iMXMiIHZhbHVlcz0iMTsuMjsxIiBjYWxjTW9kZT0ibGluZWFyIiByZXBlYXRDb3VudD0iaW5kZWZpbml0ZSIvPgogICAgPC9jaXJjbGU+CiAgICA8Y2lyY2xlIGN4PSI1Mi41IiBjeT0iNTIuNSIgcj0iMTIuNSI+CiAgICAgICAgPGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iZmlsbC1vcGFjaXR5IiBiZWdpbj0iNjAwbXMiIGR1cj0iMXMiIHZhbHVlcz0iMTsuMjsxIiBjYWxjTW9kZT0ibGluZWFyIiByZXBlYXRDb3VudD0iaW5kZWZpbml0ZSIvPgogICAgPC9jaXJjbGU+CiAgICA8Y2lyY2xlIGN4PSI5Mi41IiBjeT0iMTIuNSIgcj0iMTIuNSI+CiAgICAgICAgPGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iZmlsbC1vcGFjaXR5IiBiZWdpbj0iODAwbXMiIGR1cj0iMXMiIHZhbHVlcz0iMTsuMjsxIiBjYWxjTW9kZT0ibGluZWFyIiByZXBlYXRDb3VudD0iaW5kZWZpbml0ZSIvPgogICAgPC9jaXJjbGU+CiAgICA8Y2lyY2xlIGN4PSI5Mi41IiBjeT0iNTIuNSIgcj0iMTIuNSI+CiAgICAgICAgPGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iZmlsbC1vcGFjaXR5IiBiZWdpbj0iNDAwbXMiIGR1cj0iMXMiIHZhbHVlcz0iMTsuMjsxIiBjYWxjTW9kZT0ibGluZWFyIiByZXBlYXRDb3VudD0iaW5kZWZpbml0ZSIvPgogICAgPC9jaXJjbGU+CiAgICA8Y2lyY2xlIGN4PSIxMi41IiBjeT0iOTIuNSIgcj0iMTIuNSI+CiAgICAgICAgPGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iZmlsbC1vcGFjaXR5IiBiZWdpbj0iNzAwbXMiIGR1cj0iMXMiIHZhbHVlcz0iMTsuMjsxIiBjYWxjTW9kZT0ibGluZWFyIiByZXBlYXRDb3VudD0iaW5kZWZpbml0ZSIvPgogICAgPC9jaXJjbGU+CiAgICA8Y2lyY2xlIGN4PSI1Mi41IiBjeT0iOTIuNSIgcj0iMTIuNSI+CiAgICAgICAgPGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iZmlsbC1vcGFjaXR5IiBiZWdpbj0iNTAwbXMiIGR1cj0iMXMiIHZhbHVlcz0iMTsuMjsxIiBjYWxjTW9kZT0ibGluZWFyIiByZXBlYXRDb3VudD0iaW5kZWZpbml0ZSIvPgogICAgPC9jaXJjbGU+CiAgICA8Y2lyY2xlIGN4PSI5Mi41IiBjeT0iOTIuNSIgcj0iMTIuNSI+CiAgICAgICAgPGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iZmlsbC1vcGFjaXR5IiBiZWdpbj0iMjAwbXMiIGR1cj0iMXMiIHZhbHVlcz0iMTsuMjsxIiBjYWxjTW9kZT0ibGluZWFyIiByZXBlYXRDb3VudD0iaW5kZWZpbml0ZSIvPgogICAgPC9jaXJjbGU+Cjwvc3ZnPg==") }*/
+/*[v-cloak] {position: absolute;left: 50%;top: 50%;transform: translate(-50%, -50%);}*/
+
+/* 查询面板样式定义 */
+.search-content .el-range-editor.el-input__inner {
+    width: 100%;
+    min-width: 230px;
+}
+
+.search-content .el-date-editor .el-range-separator {
+    width: 8%;
+}
+
+.search-content .el-select {
+    display: block;
+}
+
+.search-content form {
+    background: #f5f7fa;
+    padding: 20px 20px 0;
+    border-radius: 4px
+}
+
+.search-content .el-card__body {
+    padding: 0!important;
+}
+
+.search-content.is-hover-shadow:hover, .search-content.is-hover-shadow:focus{
+    box-shadow: none!important;
+}
+
+.el-menu .fa {
+    vertical-align: middle;
+    margin-right: 5px;
+    width: 24px;
+    text-align: center;
+}
+
+.el-menu .fa:not(.is-children) {
+    font-size: 14px;
+}
+
+.fade-enter-active, .fade-leave-active {
+    transition: opacity .2s ease-in-out;
+}
+
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
+{
+    opacity: 0;
+}
+
+/*element样式重定义*/
+.el-submenu.is-active .el-submenu__title, .el-submenu.is-active .el-submenu__title i {
+    color: #fff !important;
+}
+
+.el-menu-item.is-active {
+    color: #fff !important;
+}
+
+.el-table .el-table__body tr:hover > td {
+    background-color: #f5f7fa !important;
+}
+
+.el-card.is-always-shadow {
+    box-shadow: none !important;
+}
+
+/*el-message */
+.el-message {
+    z-index: 99999 !important;
+}
+
+.special-select .el-select .el-input {
+    width: 130px;
+}
+
+.el-card__body {
+    padding: 20px 20px 10px!important;
+}
+
+.el-menu {
+    border-right: none !important;
+}
+
+.el-input.is-disabled .el-input__inner, .el-textarea.is-disabled .el-textarea__inner {
+    color: #606266 !important;
+}
+
+.el-select {
+    display: block;
+}
+
+.el-button-group > .el-button:not(:last-child) {
+    margin-right: 5px !important;
+}
+
+.el-table--enable-row-hover .el-table__body tr:hover > td {
+    background-color: #f5f7fa !important;
+}
+
+.el-form-item.search-content-button-container {
+    text-align: right
+}
+
+.el-tabs--border-card {
+    box-shadow: none;
+}
+
+.el-input.input-with-select-prepend .el-select .el-input {
+    width: 100px;
+}
+
+.el-input.input-with-select-prepend .el-input-group__prepend {
+    background-color: #fff;
+    border-color: #dcdfe6;
+    color: #606266;
+}
+
+.el-input.input-with-select-prepend .el-input-group__prepend:hover {
+    border-color: #dcdfe6;
+}
+
+.el-input.input-with-select-prepend.is-disabled .el-input-group__prepend {
+    background-color: #f5f7fa;
+}
+
+.el-date-editor.el-input, .el-date-editor.el-input__inner {
+    width: 100% !important;
+}
+
+.el-color-picker {
+    display: inline-block;
+    position: relative;
+    line-height: normal;
+    height: 30px;
+    vertical-align: top;
+    padding-top: 10px;
+}
+
+.el-color-picker__trigger {
+    width: 30px !important;
+    height: 30px !important;
+}
+
+.el-time-spinner__wrapper {
+    overflow: hidden !important;
+}
+
+.el-upload__extra-button {
+    margin-left: 10px;
+}
+
+/*form 添加border*/
+.with-border {
+    border: 1px solid #ddd;
+    margin: 15px;
+}
+
+.with-border .el-select {
+    display: block;
+}
+
+.with-border .el-row {
+    /*border-bottom: 1px solid #e7eaec;*/
+    background: #f5f5f5;
+    box-sizing: border-box
+}
+
+.with-border .el-col {
+    border-bottom: 1px solid #e7eaec;
+    /*background: #f5f5f5;*/
+    /*box-sizing: border-box*/
+}
+
+.with-border .el-row:last-child {
+    border: none
+}
+
+.with-border .el-form-item .el-form-item__label {
+    padding: 10px 10px 0 0;
+}
+
+.with-border .el-form-item {
+    margin-bottom: 0;
+    height: 100%
+}
+
+.with-border .el-form-item .el-form-item__content {
+    padding: 10px;
+    background: #fff;
+    height: 100%
+}
+
+.with-border .el-form-item__error {
+    position: relative;
+}
+
+.with-border .el-form-item--small .el-form-item__error {
+    padding-top: 5px;
+    top: 0;
+}
+
+.with-border .el-input-number--small {
+    width: 100%;
+}
+
+.with-border .el-form-item__content {
+    box-sizing: border-box;
+}
+
+.el-upload__extra-button {
+    margin-left: 10px!important;
+}

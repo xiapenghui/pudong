@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="css/singlePawn.css"/>
+</head>
+<body>
+
+<!--视频通话-->
+<div class="video_box">
+    <div class="video" id="video">
+    </div>
+    <div class="video_but">
+        <div class="vdbut sharpness">
+            <div class="but_more" data-attr-group="defBtnGroup">
+                <a data-attr-btn="defBtn">
+                    <input type="radio" name="defNormal" id="defNormal" checked="checked"/>
+                    <label for="defNormal">标清</label>
+                </a>
+                <a data-attr-btn="defBtn">
+                    <input type="radio" name="defHigh" id="defHigh"/>
+                    <label for="defHigh">高清</label>
+                </a>
+                <a data-attr-btn="defBtn">
+                    <input type="radio" name="defSuper" id="defSuper"/>
+                    <label for="defSuper">超清</label>
+                </a>
+                <a class="sjx">
+                </a>
+            </div>
+            <a class="sharpness" data-attr-btn="defLabel">标清</a>
+        </div>
+        <div class="vdbut shuaxin">
+            <a class="shuaxin" data-attr-btn="refreshBtn" title="刷新"></a>
+        </div>
+        <div class="vdbut yuntai">
+            <a class="ic_yt">
+                <span class="top" data-attr-btn="ptzBtn" data-attr-type="1"></span>
+                <span class="left" data-attr-btn="ptzBtn" data-attr-type="3"></span>
+                <span class="bottom" data-attr-btn="ptzBtn" data-attr-type="2"></span>
+                <span class="right" data-attr-btn="ptzBtn" data-attr-type="4"></span>
+            </a>
+        </div>
+        <div class="vdbut range">
+            <a class="ic_yl"></a>
+            <div class="but_yl_top">
+                <input type="range" id="volRange" value="0" min="0" max="100">
+                <div class="range_box">
+                    <a><span></span></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="vdbut" data-attr-btn="playTalk">
+            <a class="ic_hj" ></a>
+        </div>
+        <div class="vdbut" data-attr-btn="stopTalk" style="display: none;">
+            <a class="ic_hang_up" ></a>
+        </div>
+
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="js/jquery.js"></script>
+
+<script type="text/javascript" src="js/RST_CCPlugin/NPCCEnum.js"></script>
+<script type="text/javascript" src="js/RST_CCPlugin/NPCCErrorCode.js"></script>
+<script type="text/javascript" src="js/RST_CCPlugin/NPCCInterface.js"></script>
+<script type="text/javascript" src="js/RST_CCPlugin/NPCCUtils.js"></script>
+<script type="text/javascript" src="js/RST_CCPlugin/NPCCInterlayer.js"></script>
+<script type="text/javascript" src="js/RST_CCPlugin/NPCCStruct.js"></script>
+
+
+<!-- <script type="text/javascript" src="js/jquery-1.11.0.min.js"></script> -->
+<script type="text/javascript" src="js/singlePawn.js"></script>
+<!--<script type="text/javascript" src="js/webclient.js"></script>-->
+<script type="text/javascript" src="js/individualWebClient.js"></script>
+<!--<script type="text/javascript" src="js/individualCommunication.js"></script>-->
+
+<script>
+    IndividualWebClient.load();
+
+    var zh="pdgd123";
+    //var mm="abc123";
+    var mm="pdgs123";
+    IndividualWebClient.login(zh,mm);
+</script>
+
+</html>

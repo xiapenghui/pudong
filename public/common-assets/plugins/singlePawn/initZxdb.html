@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="css/singlePawn.css" />
+</head>
+
+<body>
+
+    <!--视频通话-->
+    <div class="video_box">
+
+    </div>
+</body>
+<script type="text/javascript" src="js/RST_CCPlugin/NPCCEnum.js"></script>
+<script type="text/javascript" src="js/RST_CCPlugin/NPCCErrorCode.js"></script>
+<script type="text/javascript" src="js/RST_CCPlugin/NPCCInterface.js"></script>
+<script type="text/javascript" src="js/RST_CCPlugin/NPCCUtils.js"></script>
+<script type="text/javascript" src="js/RST_CCPlugin/NPCCInterlayer.js"></script>
+<script type="text/javascript" src="js/RST_CCPlugin/NPCCStruct.js"></script>
+
+
+<script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
+<!-- <script type="text/javascript" src="js/singlePawn.js"></script> -->
+<!--<script type="text/javascript" src="js/webclient.js"></script>-->
+<script type="text/javascript" src="js/individualWebClient.js"></script>
+<!--<script type="text/javascript" src="js/individualCommunication.js"></script>-->
+
+<script>
+    var individualPlatformIP = "116.247.116.44";
+    var individualPlatformPort = "7178";
+    //var devicePlatformUser="pdgd123";
+    var devicePlatformUser = "pdgd123";
+    var devicePlatformPWD = "RjmIiRy/qSIS7C6ktCQotQ==";
+</script>
+
+<script>
+// debugger
+    var zxdbsb = [];//单兵在线设备
+
+    //登录
+    function initLogin() {
+        IndividualWebClient.load();//加载单兵插件
+        zxdbsb = IndividualWebClient.login("pdgd123", "pdgs123");//登录单兵
+        return zxdbsb;
+    }
+
+    //退出
+    function initLogout() {
+        var status = IndividualWebClient.Logout("pdgd123", "pdgs123");//退出
+        return status;
+    }
+
+</script>
+
+</html>

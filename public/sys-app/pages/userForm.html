@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>账户管理</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet"
+          href="/common-assets/plugins/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="/common-assets/plugins/outdated/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/common-assets/css/outdated/style.css"/>
+
+    <link rel="stylesheet"
+          href="/common-assets/plugins/outdated/metisMenu/2.7/metisMenu.min.css"/>
+    <link rel="stylesheet"
+          href="/common-assets/plugins/outdated/bootstrap-toastr/2.0.1/toastr.min.css"/>
+    <link rel="stylesheet" href="/common-assets/plugins/outdated/icheck/custom.css"/>
+
+    <script src='/common-assets/js/jquery-2.1.1.js'></script>
+
+    <script src="/common-assets/js/outdated/bootstrap.min.js"></script>
+    <script src="/common-assets/js/outdated/jquery.form-3.51.0.min.js"></script>
+
+    <script src="/common-assets/plugins/layer/3.0.3/layer.js"></script>
+
+    <script src="/common-assets/plugins/outdated/pace/pace.min.js"></script>
+    <script src="/common-assets/plugins/outdated/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="/common-assets/plugins/outdated/bootstrap-toastr/2.0.1/toastr.min.js"></script>
+    <script src="/common-assets/plugins/outdated/jquery-validation/jquery.validate-1.11.1.min.js"></script>
+    <script src="/common-assets/plugins/outdated/jquery-validation/localization/messages_zh.js"></script>
+    <script src="/common-assets/plugins/outdated/icheck/icheck.min.js"></script>
+    <script src="/common-assets/plugins/outdated/metisMenu/2.7/metisMenu.js"></script>
+    <script src="/common-assets/plugins/dotize/dotize.js"></script>
+    <script src="/common-assets/js/promise-polyfill.min.js"></script>
+    <!-- 开发阶段使用vue.js以获取编译信息 -->
+    <script src="/common-assets/plugins/vue/2.5.17/vue.min.js"></script>
+    <script src="/common-assets/plugins/axios/0.18.0/axios.min.js"></script>
+    <!-- 引入组件库 -->
+    <script src="/common-assets/plugins/element-ui/lib/index.js"></script>
+    <link rel="stylesheet"
+          href="/common-assets/plugins/outdated/clockpicker/clockpicker.css">
+    <script src="/common-assets/plugins/outdated/clockpicker/clockpicker.js"></script>
+    <script src="/common-assets/plugins/crypto/aes.js"></script>
+    <script src="/common-assets/plugins/crypto/hmac-sha256.js"></script>
+    <script src="/common-assets/plugins/crypto/enc-base64-min.js"></script>
+    <script src="/common-assets/plugins/crypto/pbkdf2.js"></script>
+    <script src="/common-assets/plugins/crypto/pad-iso10126.js"></script>
+    <script src="/common-assets/plugins/crypto/pad-zeropadding.js"></script>
+    <script src="/common-assets/plugins/crypto/AesUtil.js"></script>
+</head>
+<body class="pace-done white-bg">
+<div class="container-fluid mt15">
+    <form id="userForm" :action="WEB_ROOT + '/sys/user/save'" v-cloak method="post" class="form-horizontal">
+        <input type="hidden" name="id" id="id" v-model="entity.id"/>
+        <input type="hidden" name="salt" id="salt"/>
+   <!--     <input type="hidden" name="orgId" id="orgId" v-model="entity.orgId"/>-->
+        <!--<input type="hidden" name="password" id="password"/>-->
+        <input type="hidden" name="bgTime" id="bgTime"/>
+        <input type="hidden" name="edTime" id="edTime"/>
+        <table class="table table-bordered">
+            <tbody>
+            <tr>
+                <td class="col-sm-2 active"><label class="control-label pull-right"><span
+                        style="color: red; ">*</span>账号：</label></td>
+                <td class="col-sm-4">
+                    <input name="userAccount" id="userAccount" v-model="entity.userAccount"
+                           maxlength="60" class="form-control required"
+                           :disabled="editType === 'view'"/>
+                </td>
+                <td class="col-sm-2 active"><label class="control-label pull-right"><span
+                        style="color: red; ">*</span>姓名：</label></td>
+                <td class="col-sm-4">
+                    <input name="userName" id="userName" v-model="entity.userName" maxlength="30"
+                           class="form-control required" :disabled="editType === 'view'"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-sm-2 active"><label class="control-label pull-right">昵称：</label></td>
+                <td class="col-sm-4">
+                    <input name="nickName" id="nickName" v-model="entity.nickName" maxlength="60" class="form-control "
+                           :disabled="editType === 'view'"/>
+                </td>
+                <td class="col-sm-2 active"><label class="control-label pull-right">邮箱：</label></td>
+                <td class="col-sm-4">
+                    <input name="email" id="email" v-model="entity.email" maxlength="60" class="form-control email"
+                           :disabled="editType === 'view'"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-sm-2 active"><label class="control-label pull-right">性别：</label></td>
+                <td class="col-sm-4">
+                    <select name="sex" id="sex" v-model="entity.sex" :disabled="editType === 'view'" class="form-control ">
+                        <option v-for="param in sexTypeDict" :key="param.id" :value="param.paramCode">
+                            {{param.paramName}}
+                        </option>
+                    </select>
+                </td>
+                <td class="col-sm-2 active"><label class="control-label pull-right">手机号：</label></td>
+                <td class="col-sm-4">
+                    <input name="mobile" id="mobile" v-model="entity.mobile" maxlength="30" class="form-control "
+                           :disabled="editType === 'view'"/>
+                </td>
+            </tr>
+            <tr v-if="editType !== 'view'">
+                <td class="col-sm-2 active"><label class="control-label pull-right">
+                    密码:</label></td>
+                <td class="col-sm-4"><input id="newPassword" name="newPassword" type="password" value="" maxlength="128"
+                                            minlength="3" class="form-control" v-model="entity.password"/>
+                    <span v-if="entity.id" class="help-inline">若不修改密码，请留空。</span>
+                </td>
+                <td class="col-sm-2 active"><label class="control-label pull-right">
+                    确认密码:</label></td>
+                <td class="col-sm-4"><input id="confirmNewPassword"
+                                            name="confirmNewPassword" type="password"
+                                            class="form-control" value=""
+                                            maxlength="128" minlength="3" equalTo="#newPassword"/></td>
+            </tr>
+            <tr>
+                <td class="col-sm-2 active"><label class="control-label pull-right">用户状态：</label></td>
+                <td class="col-sm-4">
+                    <select name="userStatus" id="userStatus"
+                            :disabled="editType === 'view' || editType === 'edit'"
+                            class="form-control ">
+                        <option v-for="param in userStatusDict" :key="param.id" :value="param.paramCode">
+                            {{param.paramName}}
+                        </option>
+                    </select>
+                </td>
+                <td class="col-sm-2 active"><label class="control-label pull-right">账号类型：</label></td>
+                <td class="col-sm-4">
+                    <select name="userType" id="userType"
+                            :disabled="editType === 'view'" class="form-control ">
+                        <option v-for="param in userTypeDict" :key="param.id" :value="param.paramCode">
+                            {{param.paramName}}
+                        </option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-sm-2 active"><label class="control-label pull-right">单位：</label></td>
+
+
+                <td class="col-sm-4">
+                    <div class="input-group">
+                        <input type="hidden" name="orgId" id="orgId" v-model="entity.orgId"/>
+                        <input name="orgName" id="orgName" v-model="entity.orgName" maxlength="32"
+                               disabled="true" class="form-control" />
+                        <span class="input-group-btn">
+									<button type="button" id="orgSelectBtn"
+                                            :disabled="editType !== 'add'"
+                                            class="btn btn-primary treebt" data-id-Key="orgId"
+                                            data-name-Key="orgName"
+                                            :data-url="orgTreeUrl" data-title="公司">
+										<i class="fa fa-search"></i>
+									</button>
+								</span>
+                    </div>
+                </td>
+
+                <!--
+                <td class="col-sm-4">
+                    <div class="input-group">
+                        <input name="orgName" id="orgName" maxlength="32"
+                               class="form-control " disabled="disabled"/>
+                        <span class="input-group-btn">
+								<button type="button" id="orgSelectBtn" :disabled="editType === 'view'"
+                                        class="btn btn-primary treebt" data-id-Key="orgId" data-name-Key="orgName"
+                                        data-url="${ctx}${dw:getAdminPath()}/sys/org/getOrgTree?pId=${dw:getUser().userAccount == 'admin' ?'0': dw:getCurCorp().id }"
+                                        data-title="公司">
+									<i class="fa fa-search"></i>
+                            </button>
+							</span>
+                    </div>
+                </td>-->
+
+                <td class="col-sm-2 active"><label class="control-label pull-right">员工号：</label></td>
+                <td class="col-sm-4">
+                    <input id="empNo" name="empNo" v-model="entity.empNo"  maxlength="60"  class="form-control "
+                           :disabled="editType === 'view'"/>
+                </td>
+
+            </tr>
+            <tr>
+                <td class="col-sm-2 active"><label class="control-label pull-right">启用限时登录：</label></td>
+                <td class="col-sm-4">
+                    <select id="enTimeLimit" name="enTimeLimit" v-model="entity.enTimeLimit"
+                            :disabled="editType === 'view'" class="form-control"
+                            onchange="limitOnchange(this)">
+                        <option v-for="param in enTimeLimitDict" :key="param.id" :value="param.paramCode">
+                            {{param.paramName}}
+                        </option>
+                    </select>
+                </td>
+                <td class="col-sm-2 active"><label class="control-label pull-right">白名单IP限制：</label></td>
+                <td class="col-sm-4">
+                    <div class="input-group">
+                        <input id="limitIp" name="limitIp" v-model="entity.limitIp" maxlength="2048"
+                               :disabled="editType === 'view' || editType === 'edit'"
+                               class="form-control"/>
+                            <span class="input-group-btn">
+								<button type="button" id="ipSelectBtn" :disabled="editType === 'view'"
+                                        class="btn btn-primary" data-title="IP限制选择">
+									<i class="fa fa-search"></i>
+                            </button>
+							</span>
+                    </div>
+                </td>
+            </tr>
+            <tr v-show="entity.enTimeLimit === '1'" id="trTime">
+                <td class="col-sm-2 active"><label class="control-label pull-right">开始时间：</label></td>
+                <td class="col-sm-4">
+                    <div class="input-group clockpicker" data-placement="top" data-autoclose="true">
+                        <input id="bgTimeFormater" name="bgTimeFormater" v-model="entity.bgTimeFormater"  type="text" class="form-control"
+                               :disabled="editType === 'view'"/>
+                        <span class="input-group-addon" for="bgTimeFormater">
+								<span class="glyphicon glyphicon-time"></span>
+							</span>
+                    </div>
+                </td>
+
+                <td class="col-sm-2 active"><label class="control-label pull-right">结束时间：</label></td>
+                <td class="col-sm-4">
+                    <div class="input-group clockpicker" data-placement="top" data-autoclose="true">
+                        <input id="edTimeFormater" name="edTimeFormater"  v-model="entity.edTimeFormater"  type="text" class="form-control"
+                               :disabled="editType === 'view'" compareDate="#bgTimeFormater"/>
+                        <span class="input-group-addon">
+								<span class="glyphicon glyphicon-time"></span>
+							</span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-sm-2 active"><label class="control-label pull-right">创建时间：</label></td>
+                <td class="col-sm-4">
+                    <input id="createTime" name="createTime" v-model="entity.createTime"
+                           maxlength="60" class="form-control "
+                           disabled="true"/>
+                </td>
+
+                <td class="col-sm-2 active"><label class="control-label pull-right">身份证号：</label></td>
+                <td class="col-sm-4">
+                    <input id="identityCode" name="identityCode" v-model="entity.identityCode" maxlength="30" class="form-control "
+                           :disabled="editType === 'view'"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-sm-2 active"><label class="control-label pull-right">人资编码：</label></td>
+                <td class="col-sm-4">
+                    <input id="hrCode" name="hrCode" maxlength="30" v-model="entity.hrCode" class="form-control "
+                           :disabled="editType === 'view'"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+</body>
+<script src="/common-assets/js/outdated/common.js"></script>
+<!-- 本页面对应JS-->
+<script src="../static/js/userForm.js"></script>
+</html>

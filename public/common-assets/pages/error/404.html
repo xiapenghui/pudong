@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>在服务器上未找到指定资源</title>
+    <link href="/common-assets/css/element-variables.css" rel=stylesheet>
+    <script src="/common-assets/js/promise-polyfill.min.js"></script>
+    <script src="/common-assets/plugins/axios/0.18.0/axios.min.js"></script>
+    <style type="text/css">
+        .fullScreen {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            padding: 50px 0;
+        }
+
+        .errPage-container {
+            width: 800px;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        .errPage-container .pan-back-btn {
+            background: #008489;
+            color: #fff;
+            border: none !important;
+        }
+
+        .errPage-container .pan-gif {
+            margin: 0 auto;
+            display: block;
+        }
+
+        .errPage-container .pan-img {
+            display: block;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .errPage-container .text-jumbo {
+            font-size: 60px;
+            font-weight: 700;
+            color: #484848;
+        }
+
+        .errPage-container .list-unstyled {
+            font-size: 14px;
+            padding-left: 0;
+        }
+
+        .errPage-container .list-unstyled li {
+            margin-bottom: 10px;
+            list-style-type: none;
+        }
+
+        .errPage-container .list-unstyled a {
+            color: #008489;
+            text-decoration: none;
+        }
+
+        .errPage-container .list-unstyled a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+<div class="fullScreen">
+    <div class="errPage-container">
+        <div class="el-row">
+            <div class="el-col el-col-12"><h1 class="text-jumbo text-ginormous">
+                Oops!<strong id="status">404</strong></h1>
+                <h2 class="text-primary" id="title" style="margin-bottom: 15px;">在服务器上未找到指定资源</h2>
+                <h3 style="margin-bottom: 15px;" id="desc">请联系管理员</h3>
+                <ul class="list-unstyled">
+                    <li>或者你可以:</li>
+                    <!--<li class="link-type"><a href="#/dashboard" class="">回首页</a>-->
+                    <!--</li>-->
+                </ul>
+                <button onclick="backToIndex()" type="button" class="el-button pan-back-btn el-button--default">
+                    <!----><i
+                        class="arrow-left"></i><span>返回首页</span></button>
+            </div>
+            <div class="el-col el-col-12">
+                <img src="/common-assets/img/error.gif"
+                     width="313" height="428"
+                     alt="Girl has dropped her ice cream.">
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="/common-assets/js/storageEvent.js"></script>
+<script src="/common-assets/js/common.js"></script>
+<script type="text/javascript">
+  initConfig()
+
+  function backToIndex () {
+    var adminContext = commonConfig.adminContext
+    if (adminContext) {
+      top.window.location.replace(adminContext + '/')
+    } else {
+      alert('获取系统配置信息失败，系统无法运行')
+    }
+  }
+</script>
+</html>

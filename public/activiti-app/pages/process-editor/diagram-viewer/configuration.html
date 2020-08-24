@@ -1,0 +1,108 @@
+﻿<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<link rel="stylesheet" href="style.css" type="text/css" media="screen">
+<script src="js/jstools.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/raphael.js" type="text/javascript" charset="utf-8"></script>
+
+<script src="js/jquery/jquery.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/jquery/jquery.progressbar.js" type="text/javascript"
+	charset="utf-8"></script>
+<script src="js/jquery/jquery.asyncqueue.js" type="text/javascript"
+	charset="utf-8"></script>
+
+<script src="js/Color.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/Polyline.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/ActivityImpl.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/ActivitiRest.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/LineBreakMeasurer.js" type="text/javascript"
+	charset="utf-8"></script>
+<script src="js/ProcessDiagramGenerator.js" type="text/javascript"
+	charset="utf-8"></script>
+<script src="js/ProcessDiagramCanvas.js" type="text/javascript"
+	charset="utf-8"></script>
+<script src="../editor-app/configuration/url-config.js"
+	type="text/javascript"></script>
+<script type="text/javascript src="../../static/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script type="text/javascript src="../../static/js/common.js" ></script>
+
+<style type="text/css" media="screen">
+</style>
+<title>流程图</title>
+</head>
+<body>
+	<div class="wrapper">
+		<div id="overlayBox">
+			<div id="diagramHolder" class="diagramHolder"></div>
+		</div>
+	</div>
+	<script language='javascript'>
+		$(function() {
+			var procDefId = getUrlParam("procDefId");
+
+			var processDefinitionDiagramLayout;
+
+			$.ajax({
+				type : "get",
+				async : false,
+				url : KISBPM.URL.getDiagramNode(procDefId),
+				success : function(result) {
+					processDefinitionDiagramLayout = result.data;
+				}
+			})
+
+			ProcessDiagramGenerator.options = {
+				diagramHolderId : "diagramHolder",
+				on : {
+					click : function(canvas, element, contextObject) {
+						var mouseEvent = this;
+						var nodeType = '';
+						if (contextObject.properties == undefined) {
+							nodeType = "sequenceFlow";
+						} else {
+							nodeType = contextObject.properties.type;
+						}
+						openPropertyEditor(procDefId, element.id, nodeType);
+						mouseEvent.stopPropagation();
+					}
+				}
+			};
+
+			ProcessDiagramGenerator.generateDiagram(processDefinitionDiagramLayout);
+
+		});
+
+		function openPropertyEditor(procDefId, nodeId, nodeType) {
+			if(nodeType == "userTask"){
+//				window.open(KISBPM.URL.userTaskDefPage(procDefId, nodeId));
+				var url = KISBPM.URL.userTaskDefPage(procDefId, nodeId);
+				openDialog("用户任务节点编辑", url, {
+					width : "800px",
+					height : "500px"
+				});
+			}
+			else if(nodeType == "sequenceFlow"){
+//				window.open(KISBPM.URL.sequenceFlowDefPage(procDefId, nodeId));
+				var url = KISBPM.URL.userTaskDefPage(procDefId, nodeId);
+				openDialog("连线节点编辑", url, {
+					width : "800px",
+					height : "500px"
+				});
+			}
+			//TODO 系统任务
+		}
+
+		/**
+		 * 获取URL中的参数
+		 */
+		function getUrlParam(paramName) {
+			var reg = new RegExp("(^|&)" + paramName + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+			var r = window.location.search.substr(1).match(reg); //匹配目标参数
+			if (r != null)
+				return unescape(r[2]); //返回参数值
+			return null;
+		}
+	</script>
+</body>
+</html>

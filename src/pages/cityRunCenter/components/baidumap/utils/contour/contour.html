@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+<script type="module">
+    import {shadowData, heatmapData} from "./imageData.js";
+    import * as unit from "./unit.js";
+    import contour from "./Contour.js";
+
+    unit.clearPage();
+    let shadowCanvas = unit.createRendererCanvas("shadow");
+    unit.loadImageDataUrl(shadowData, shadowCanvas);
+
+    let headmapCanvas = unit.createRendererCanvas("heatmap", shadowCanvas);
+    unit.loadImageDataUrl(heatmapData, headmapCanvas);
+
+    let canvas = null;
+
+    let contours = null;
+    let grid = null;
+    // setTimeout(function () {
+    //
+    //     let canvas = unit.createDebugRenderer(headmapCanvas);
+    //     let context = canvas.getContext("2d");
+    //     unit.drawShadow();
+    //
+    //     contours = contour(shadowCanvas , 2.7);
+    //     window.contours = contours;
+    //     context.fillStyle = "#00ffff";
+    //     contours.forEach((contour)=>{
+    //         let coordinates = contour.coordinates[0];
+    //         coordinates.forEach((coordinate)=>{
+    //             context.fillRect(coordinate[0] , coordinate[1] , 1, 1);
+    //         })
+    //     })
+    //
+    // }, 1000);
+
+    window.test = function(value){
+
+        let canvas = unit.createDebugRenderer(headmapCanvas);
+        let context = canvas.getContext("2d");
+        unit.drawShadow();
+
+        console.time("contours");
+        contours = contour(shadowCanvas , value,false);
+        console.timeEnd("contours");
+
+        window.contours = contours;
+        context.fillStyle = "#00ffff";
+        context.strokeStyle = "#00ffff";
+        contours.forEach((contour)=>{
+            let coordinates = contour.coordinates[0];
+            context.beginPath();
+            context.moveTo(coordinates[0] , coordinates[1]);
+            coordinates.forEach((coordinate)=>{
+                context.lineTo(coordinate[0] , coordinate[1] );
+            });
+            context.stroke();
+        })
+    }
+
+</script>
+</html>

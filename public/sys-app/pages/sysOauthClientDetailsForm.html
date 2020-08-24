@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>服务请求认证详情表表单管理</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="/common-assets/css/normalize.css"/>
+    <!-- 引入样式 -->
+    <link id="elementThemeG" rel="stylesheet" class="elementTheme"
+          href="/common-assets/plugins/element-ui/lib/theme-chalk/element-green.css">
+    <link id="elementThemeR" rel="stylesheet" class="elementTheme"
+          href="/common-assets/plugins/element-ui/lib/theme-chalk/element-red.css">
+    <link id="elementThemeD" rel="stylesheet" class="elementTheme"
+          href="/common-assets/plugins/element-ui/lib/theme-chalk/element-default.css">
+    <link rel="stylesheet" href="/common-assets/css/dwElementUI.css"/>
+
+    <script src="/common-assets/js/jquery-2.1.1.js"></script>
+    <script src="/common-assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="/common-assets/plugins/layer/3.0.3/layer.js"></script>
+    <script src="/common-assets/plugins/dotize/dotize.js"></script>
+    <script src="/common-assets/js/promise-polyfill.min.js"></script>
+    <!-- 开发阶段使用vue.js以获取编译信息 -->
+    <script src="/common-assets/plugins/vue/2.5.17/vue.min.js"></script>
+    <script src="/common-assets/plugins/axios/0.18.0/axios.min.js"></script>
+    <!-- 引入组件库 -->
+    <script src="/common-assets/plugins/element-ui/lib/index.js"></script>
+</head>
+<body class="pace-done white-bg">
+<div class="container-fluid">
+    <el-form label-position="right" size="small" label-width="100px" class="with-border"
+             ref="sysOauthClientDetailsForm" id="sysOauthClientDetailsForm" :model="entity" :rules="rules" v-cloak>
+        <el-collapse :value="['basicInfo']">
+            <el-collapse-item title="基础信息" name="basicInfo">
+                <el-row type="flex" justify="center">
+                    <el-col :span="12">
+                        <el-form-item prop="clientId" label="客户端">
+                            <el-input placeholder="请输入客户端" v-model="entity.clientId" :disabled="editType === 'view'|| editType === 'edit'  "></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-form-item prop="clientSecret" label="访问密匙">
+                            <el-input placeholder="请输入访问密匙" v-model="entity.clientSecret" :disabled="editType === 'view'"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row type="flex" justify="center">
+                    <el-col :span="12">
+                        <el-form-item prop="scope" label="申请权限范围">
+                            <el-input placeholder="请输入申请权限范围" v-model="entity.scope" :disabled="editType === 'view'"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-form-item prop="authorizedGrantTypesArray" label="支持的授权类型">
+                            <el-select v-model="entity.authorizedGrantTypesArray" multiple :disabled="editType === 'view'"
+                                       placeholder="请选择支持的授权类型">
+                                <el-option v-for="param in getDictByField('authorizedGrantTypes')" :key="param.id" :label="param.paramName"
+                                           :value="param.paramCode">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row type="flex" justify="center">
+                    <el-col :span="12">
+                        <el-form-item prop="webServerRedirectUri" label="重定向URI">
+                            <el-input placeholder="请输入重定向URI" v-model="entity.webServerRedirectUri" :disabled="editType === 'view'"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-form-item prop="authorities" label="拥有的权限值">
+                            <el-input placeholder="请输入拥有的权限值" v-model="entity.authorities" :disabled="editType === 'view'"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row type="flex" justify="center">
+                    <el-col :span="12">
+                        <el-form-item prop="accessTokenValidity" label="access_token的有效时间(秒)">
+                            <el-input placeholder="请输入access_token的有效时间(秒)" v-model="entity.accessTokenValidity" :disabled="editType === 'view'"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-form-item prop="refreshTokenValidity" label="refresh_token的有效时间(秒)">
+                            <el-input placeholder="请输入refresh_token的有效时间(秒)" v-model="entity.refreshTokenValidity" :disabled="editType === 'view'"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row type="flex" justify="center">
+                    <el-col :span="12">
+                        <el-form-item prop="autoapprove" label="用户是否自动操作">
+                            <el-select v-model="entity.autoapprove" clearable :disabled="editType === 'view'"
+                                       placeholder="请选择用户是否自动操作">
+                                <el-option v-for="param in getDictByField('autoapprove')" :key="param.id" :label="param.paramName"
+                                           :value="param.paramCode">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12"></el-col>
+                </el-row>
+            </el-collapse-item>
+        </el-collapse>
+    </el-form>
+</div>
+</body>
+<script src="/common-assets/js/outdated/common.js"></script>
+<!-- 本页面对应JS-->
+<script src="../static/js/sysOauthClientDetailsForm.js"></script>
+</html>

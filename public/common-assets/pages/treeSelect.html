@@ -1,0 +1,107 @@
+<html>
+<head>
+    <title>数据选择</title>
+    <meta name="decorator" content="blank"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet"
+          href="/common-assets/plugins/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="/common-assets/plugins/outdated/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/common-assets/css/outdated/style.css"/>
+
+    <link rel="stylesheet"
+          href="/common-assets/plugins/outdated/metisMenu/2.7/metisMenu.min.css"/>
+    <link rel="stylesheet"
+          href="/common-assets/plugins/outdated/bootstrap-toastr/2.0.1/toastr.min.css"/>
+    <link rel="stylesheet" href="/common-assets/plugins/outdated/icheck/custom.css"/>
+
+    <script src='/common-assets/js/jquery-2.1.1.js'></script>
+
+    <script src="/common-assets/js/outdated/bootstrap.min.js"></script>
+    <script src="/common-assets/js/outdated/jquery.form-3.51.0.min.js"></script>
+
+    <script src="/common-assets/plugins/layer/3.0.3/layer.js"></script>
+
+    <script src="/common-assets/plugins/outdated/pace/pace.min.js"></script>
+    <script src="/common-assets/plugins/outdated/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="/common-assets/plugins/outdated/bootstrap-toastr/2.0.1/toastr.min.js"></script>
+    <script src="/common-assets/plugins/outdated/jquery-validation/jquery.validate-1.11.1.min.js"></script>
+    <script src="/common-assets/plugins/outdated/jquery-validation/localization/messages_zh.js"></script>
+    <script src="/common-assets/plugins/outdated/icheck/icheck.min.js"></script>
+    <script src="/common-assets/plugins/outdated/metisMenu/2.7/metisMenu.js"></script>
+    <script src="/common-assets/plugins/dotize/dotize.js"></script>
+    <script src="/common-assets/js/promise-polyfill.min.js"></script>
+    <!-- 开发阶段使用vue.js以获取编译信息 -->
+    <script src="/common-assets/plugins/vue/2.5.17/vue.min.js"></script>
+    <script src="/common-assets/plugins/axios/0.18.0/axios.min.js"></script>
+    <link rel="stylesheet" href="/common-assets/plugins/outdated/bootstrap/css/bootstrap.min.css"/>
+    <link
+            href="/common-assets/plugins/jquery-ztree/3.5/css/metroStyle/metroStyle.css"
+            rel="stylesheet"/>
+    <script src='/common-assets/js/jquery-2.1.1.js'></script>
+    <script src="/common-assets/js/outdated/bootstrap.min.js"></script>
+    <script src="/common-assets/plugins/outdated/pace/pace.min.js"></script>
+    <script src="/common-assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script
+            src="/common-assets/plugins/jquery-ztree/3.5/js/jquery.ztree.all.min.js"
+            type="text/javascript"></script>
+    <script src="/common-assets/js/outdated/common.js"></script>
+    <script type="text/javascript">
+      var selectId = GetQueryString('selectId')
+      var extIds = GetQueryString('extIds') || ''
+      var extIdArr = extIds.split(',')
+      var idKey = GetQueryString('idKey')
+      var pIdKey = GetQueryString('pIdKey')
+      var rootPId = GetQueryString('rootPId')
+      var nameKey = GetQueryString('nameKey')
+      var tree, setting = {
+        view: {
+          selectedMulti: false,
+          dblClickExpand: false,
+        },
+        check: {
+          enable: false,
+        },
+        data: {
+          simpleData: {
+            enable: true,
+            idKey: idKey || 'id',
+            pIdKey: pIdKey || 'pId',
+            rootPId: rootPId || '0',
+          },
+          key: {
+            name: nameKey || 'name',
+          },
+        },
+        callback: {
+          onDblClick: function (evt, tid, node) {
+            if ($.inArray(node.id, extIdArr) !== -1) {
+              return
+            }
+            top.$('#layui-layer' + top.layer.index).find('.layui-layer-btn0').click()
+          },
+        },
+      }
+      $(function () {
+        var url = GetQueryString('url')
+        $.get(url, function (result) {
+          var zNodes = !!result.list ? result.list : (!!result.data ? result.data : result)
+          tree = $.fn.zTree.init($('#tree'), setting, zNodes)
+          $('#wrapper').slimScroll({
+            height: '100%',
+            railOpacity: 0.9,
+          })
+          var node = tree.getNodeByParam('id', selectId, null)
+          if (!!node) {
+            tree.selectNode(node)
+            tree.expandNode(node, true, false, true)
+          }
+        })
+      })
+    </script>
+</head>
+<body>
+<div id="wrapper">
+    <div id="tree" class="ztree" style="padding: 15px 20px;"></div>
+</div>
+</body>
